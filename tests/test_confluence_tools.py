@@ -19,7 +19,11 @@ class DummyConfluence:
 
 def test_create_page(monkeypatch):
     dummy = DummyConfluence()
-    monkeypatch.setattr(confluence_tools, "get_confluence_client", lambda: dummy)
+    monkeypatch.setattr(
+        confluence_tools,
+        "get_confluence_client",
+        lambda: dummy,
+    )
     result = confluence_tools.create_confluence_page(
         space="TS", title="Title", body="Body"
     )
@@ -29,7 +33,11 @@ def test_create_page(monkeypatch):
 
 def test_search(monkeypatch):
     dummy = DummyConfluence()
-    monkeypatch.setattr(confluence_tools, "get_confluence_client", lambda: dummy)
+    monkeypatch.setattr(
+        confluence_tools,
+        "get_confluence_client",
+        lambda: dummy,
+    )
     result = confluence_tools.search_confluence(query="hello")
     assert result == {"results": [1]}
     assert dummy.calls == [("search", "siteSearch ~ 'hello'")]
@@ -37,7 +45,14 @@ def test_search(monkeypatch):
 
 def test_append_page(monkeypatch):
     dummy = DummyConfluence()
-    monkeypatch.setattr(confluence_tools, "get_confluence_client", lambda: dummy)
-    msg = confluence_tools.append_to_confluence_page(page_id="1", content="content")
+    monkeypatch.setattr(
+        confluence_tools,
+        "get_confluence_client",
+        lambda: dummy,
+    )
+    msg = confluence_tools.append_to_confluence_page(
+        page_id="1",
+        content="content",
+    )
     assert msg == "content appended"
     assert dummy.calls == [("append", "1", "content")]

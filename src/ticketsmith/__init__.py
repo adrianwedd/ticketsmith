@@ -13,6 +13,7 @@ from .confluence_tools import (
     search_confluence,
     append_to_confluence_page,
 )
+from .linking_tools import create_linked_issue_and_page
 from .atlassian_auth import (
     AtlassianAuthError,
     get_confluence_client,
@@ -40,4 +41,5 @@ __all__ = [
     "create_confluence_page",
     "search_confluence",
     "append_to_confluence_page",
+    "create_linked_issue_and_page",
 ]
