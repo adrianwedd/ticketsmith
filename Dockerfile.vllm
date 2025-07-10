@@ -1,0 +1,21 @@
+# Docker image for self-hosted LLM inference using vLLM
+FROM nvidia/cuda:12.2.0-runtime-ubuntu20.04
+
+WORKDIR /app
+
+# Install Python and vLLM
+RUN apt-get update && \
+    apt-get install -y python3-pip git && \
+    rm -rf /var/lib/apt/lists/* && \
+    pip3 install --no-cache-dir vllm==0.2.2
+
+# Environment variables
+ENV VLLM_MODEL="meta-llama/Llama-3-8B-Instruct"
+ENV INFERENCE_API_KEY=""
+
+COPY scripts/start_vllm.sh /app/start_vllm.sh
+RUN chmod +x /app/start_vllm.sh
+
+EXPOSE 8000
+CMD ["/app/start_vllm.sh"]
+

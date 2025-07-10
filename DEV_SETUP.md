@@ -7,7 +7,9 @@
 ## Quick Start
 
 ```bash
-# Launch both frontend and backend
+# Launch frontend, backend, and inference server
+export VLLM_MODEL="meta-llama/Llama-3-8B-Instruct"
+export INFERENCE_API_KEY="dev-key"
 docker-compose up --build
 ```
 
