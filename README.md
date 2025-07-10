@@ -25,6 +25,9 @@ docker compose up inference
 Requests must include `Authorization: Bearer <API key>` to access the
 `/v1/chat/completions` endpoint.
 
+Benchmark results for tuning the vLLM server are available in
+[vLLM Benchmark Results](docs/VLLM_BENCHMARKS.md).
+
 ### Local `llama-cpp-python` Inference
 
 Developers can run quantized models directly on their machines for quick
