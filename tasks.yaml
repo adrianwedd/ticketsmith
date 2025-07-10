@@ -1,18 +1,1060 @@
-# TICKETSMITH Tasks
-phases:
-  - phase: MVP
-    tasks:
-      - name: Jira integration (create/update issues via LLM)
-        status: todo
-      - name: LLM inference routing (OpenAI + fallback)
-        status: todo
-      - name: Human-in-the-loop interface
-        status: todo
-  - phase: Phase 2 - Confluence
-    tasks:
-      - name: Confluence page generation from issues
-        status: todo
-      - name: Cross-linked summaries
-        status: todo
-      - name: RAG integration using Jira + Confluence
-        status: todo
+- id: 101
+  title: "Define Project Objectives, Use Cases, and Success Metrics"
+  description: "This foundational task establishes the 'why' behind the project. It involves a formal process of engaging with all relevant stakeholders to elicit, document, and ratify the core business objectives the AI agent system is intended to solve. A clear definition of use cases and quantifiable success metrics is paramount, as these will guide all subsequent architectural decisions, feature prioritization, and evaluation efforts. Without this clarity, the project risks scope creep and an inability to measure return on investment. This is not merely a documentation exercise; it is the strategic bedrock of the entire initiative.[1, 2]"
+  component: "Project Management"
+  dependencies:
+  priority: 1
+  status: "pending"
+  command: null
+  task_id: "PROJ-PLAN-001"
+  area: "Planning"
+  actionable_steps:
+    - "Conduct structured interviews with key business, technical, and operational stakeholders."
+    - "Translate stakeholder needs into detailed user stories and functional requirements."
+    - "Define specific, measurable, achievable, relevant, and time-bound (SMART) success metrics (e.g., 'Reduce average ticket resolution time by 20% within 6 months of deployment')."
+    - "Draft and circulate a Project Charter document in Confluence for formal sign-off."
+  acceptance_criteria:
+    - "A Project Charter document is finalized and approved by all key stakeholders."
+    - "The charter is published and accessible in the project's Confluence space."
+    - "Success metrics are clearly defined and agreed upon."
+  assigned_to: "ProjectManager"
+  epic: "Project Scoping, Planning, and Foundational Setup"
+- id: 102
+  title: "Select and Approve Core Technology Stack and Agent Framework"
+  description: "This critical task involves making foundational architectural decisions about the core technologies that will power the agent system. The choice of an LLM agent framework is particularly significant, as it dictates the fundamental approach to agent orchestration and interaction. A framework like LangGraph provides explicit state management and is ideal for building complex but predictable and auditable enterprise workflows.[3, 4] In contrast, a framework like AutoGen, which relies on emergent agent-to-agent conversation, offers more dynamism but can be less predictable and harder to debug in a production environment.[5, 6] This decision is therefore not just technical but strategic, balancing the need for autonomy against the requirement for control and reliability. The selection process must also cover LLM inference engines, databases, and other key dependencies."
+  component: "Architecture"
+  dependencies:
+    - 101
+  priority: 1
+  status: "pending"
+  command: null
+  task_id: "PROJ-ARCH-001"
+  area: "Architecture"
+  actionable_steps:
+    - "Evaluate and compare LLM agent frameworks (e.g., LangGraph, AutoGen, CrewAI) based on the project's need for control vs. autonomy. Create a 'Agent Framework Comparison' table in Confluence to document the decision.[5, 6, 3]"
+    - "Assess LLM inference options: managed services (e.g., OpenAI API) versus self-hosted solutions (e.g., vLLM, Ollama).[7, 8, 9]"
+    - "Compare database technologies for both structured data (e.g., PostgreSQL vs. SQLite) and unstructured/vector data.[10, 11, 12]"
+    - "Document the final technology stack choices, including justifications, in the Architectural Blueprint."
+  acceptance_criteria:
+    - "The 'Agent Framework Comparison' and other technology evaluation documents are published in Confluence."
+    - "A final, approved list of core technologies and frameworks is documented in the Architectural Blueprint."
+  assigned_to: "LeadArchitect"
+  epic: "Project Scoping, Planning, and Foundational Setup"
+- id: 103
+  title: "Establish Project Management and Collaboration Infrastructure"
+  description: "Set up the necessary Atlassian suite infrastructure to support project execution, tracking, and documentation. This involves configuring a Jira project for agile task management and a Confluence space to serve as the central knowledge repository for all project-related artifacts, including architectural diagrams, meeting notes, decision logs, and user documentation."
+  component: "Project Management"
+  dependencies:
+  priority: 1
+  status: "pending"
+  command: null
+  task_id: "PROJ-SETUP-001"
+  area: "Infrastructure"
+  actionable_steps:
+    - "Create a new Jira project with an appropriate workflow (e.g., Scrum or Kanban)."
+    - "Define issue types (Epic, Story, Task, Bug) and custom fields as needed."
+    - "Create a new Confluence space dedicated to the project."
+    - "Establish a documentation structure within the Confluence space for architecture, meeting notes, and decision logs."
+    - "Configure permissions for both Jira and Confluence to ensure appropriate access for all team members."
+  acceptance_criteria:
+    - "Jira project is live and accessible to the team."
+    - "Confluence space is created with a defined page tree structure."
+    - "All team members have been granted appropriate permissions."
+  assigned_to: "ProjectManager"
+  epic: "Project Scoping, Planning, and Foundational Setup"
+- id: 104
+  title: "Develop Initial Architectural Blueprint"
+  description: "Create the initial high-level architectural design for the LLM agent system. This blueprint will serve as a living document, evolving as the project progresses, but is essential for establishing a shared understanding of the system's structure and data flows from the outset. It must visualize the major components, their interactions, and the overall design patterns that will be employed.[1, 13, 14]"
+  component: "Architecture"
+  dependencies:
+    - 101
+    - 102
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "PROJ-ARCH-002"
+  area: "Architecture"
+  actionable_steps:
+    - "Create high-level diagrams illustrating the core agent loop, data flow between components, tool integration points, and the user interface."
+    - "Document the key architectural patterns to be used, such as ReAct for the agent loop and RAG for knowledge retrieval."
+    - "Outline the initial security model, including authentication, authorization, and data handling."
+    - "Publish the initial blueprint to the project's Confluence space for team review and feedback."
+  acceptance_criteria:
+    - "The initial Architectural Blueprint document is published in Confluence."
+    - "The blueprint includes diagrams for the system's major components and data flows."
+    - "The blueprint has been reviewed and acknowledged by the core development team."
+  assigned_to: "LeadArchitect"
+  epic: "Project Scoping, Planning, and Foundational Setup"
+- id: 201
+  title: "Design and Implement the Core Agent Loop"
+  description: "Develop the fundamental operational cycle, or 'brain,' of the agent. The ReAct (Reason, Act) framework is a robust and widely adopted pattern for this purpose. It structures the agent's process into a loop of `Thought -> Action -> Observation`. In the `Thought` step, the LLM reasons about the current state and decides what to do next. The `Action` step involves the agent invoking a specific tool with generated parameters. The `Observation` step is the agent processing the result from the tool, which then feeds into the next `Thought` cycle. This iterative process allows the agent to perform complex, multi-step tasks and recover from errors.[2, 15]"
+  component: "Agent Core"
+  dependencies:
+    - 104
+  priority: 1
+  status: "pending"
+  command: null
+  task_id: "AGENT-CORE-001"
+  area: "Development"
+  actionable_steps:
+    - "Implement the state machine for the ReAct loop using the selected agent framework (e.g., LangGraph)."
+    - "Define the prompt templates for the 'Thought' generation step, instructing the LLM on how to reason and select actions."
+    - "Create the mechanism for parsing the LLM's output to extract the intended 'Action' (tool name and arguments)."
+    - "Implement the logic to feed the 'Observation' (tool output) back into the prompt for the next iteration."
+  acceptance_criteria:
+    - "A basic agent can successfully execute a single Thought-Action-Observation loop."
+    - "The agent can correctly parse a tool name and its arguments from an LLM response."
+    - "The agent's state (history of thoughts, actions, observations) is correctly maintained through one cycle."
+  assigned_to: "LeadDeveloper"
+  epic: "Core Agent Architecture and Development"
+- id: 202
+  title: "Implement Agent Planning and Task Decomposition Module"
+  description: "Equip the agent with the ability to break down complex, high-level user requests into a sequence of smaller, executable sub-tasks. Simple tasks can be handled by basic prompt engineering, but robust planning requires more advanced techniques. This module will leverage Chain of Thought (CoT) or Tree of Thoughts (ToT) prompting to enable the LLM to generate a step-by-step plan. For enhanced reliability, a reflection mechanism will be implemented, allowing the agent to analyze the outcome of its actions and refine its plan if the initial approach is not succeeding.[2, 16]"
+  component: "Agent Core"
+  dependencies:
+    - 201
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "AGENT-CORE-002"
+  area: "Development"
+  actionable_steps:
+    - "Design a prompt template that encourages the LLM to decompose a complex request into a numbered or structured plan."
+    - "Implement logic to execute the plan step-by-step, feeding the result of each step back to the agent."
+    - "Develop a 'reflection' prompt where the agent evaluates its progress against the overall goal and can decide to modify the plan."
+    - "Test the planning module with multi-step queries that require using several tools in sequence."
+  acceptance_criteria:
+    - "Given a complex query, the agent generates a logical, multi-step plan."
+    - "The agent can execute each step of the plan sequentially."
+    - "The agent can recognize a failed step and attempt to generate a revised plan."
+  assigned_to: "SeniorDeveloper"
+  epic: "Core Agent Architecture and Development"
+- id: 203
+  title: "Implement Short-Term and Long-Term Memory System"
+  description: "Develop the agent's memory capabilities, which are essential for maintaining context during conversations and learning from past interactions. The system will feature a hybrid memory architecture. Short-term memory will be managed by maintaining a sliding window of recent conversation history within the LLM's context window. Long-term memory will be implemented using an external vector database, allowing the agent to retrieve relevant information from a vast history of interactions via semantic search.[2, 17, 15]"
+  component: "Agent Core"
+  dependencies:
+    - 102
+    - 201
+    - 503
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "AGENT-CORE-003"
+  area: "Development"
+  actionable_steps:
+    - "Implement a conversation buffer to manage the history passed in each LLM call for short-term memory."
+    - "Integrate the vector database (from Epic 5) into the agent loop."
+    - "Create a process to automatically embed and store summaries of completed conversations in the vector database for long-term memory."
+    - "Implement a retrieval function that searches the long-term memory for relevant context at the beginning of a new interaction."
+  acceptance_criteria:
+    - "The agent can maintain context within a single, multi-turn conversation."
+    - "Completed conversations are successfully vectorized and stored in the long-term memory store."
+    - "The agent can retrieve and use relevant information from past conversations when prompted with a similar query."
+  assigned_to: "SeniorDeveloper"
+  epic: "Core Agent Architecture and Development"
+- id: 204
+  title: "Develop the Tool Definition and Invocation Layer"
+  description: "Create the critical interface that allows the agent's reasoning module to connect with and execute external tools. This task is not merely about writing wrapper code; it is about crafting the metadata that the LLM uses to understand and select tools. The quality of a tool's name, its natural language description, and its argument schema are as crucial as the tool's underlying code. A poorly described tool will be consistently misused by the LLM, leading to execution failures. Therefore, this task involves a 'Tool-Prompt Co-design' process, where the development of a tool is intrinsically linked to the development and testing of its descriptive prompt.[18, 19]"
+  component: "Agent Core"
+  dependencies:
+    - 201
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "AGENT-CORE-004"
+  area: "Development"
+  actionable_steps:
+    - "Use the selected framework's tool definition mechanism (e.g., LangChain's `@tool` decorator or `StructuredTool`) to wrap Python functions."
+    - "For each tool, write a clear, concise, and unambiguous description that explains what the tool does, when it should be used, and what its parameters mean."
+    - "Define a strict Pydantic or JSON schema for each tool's arguments to ensure the LLM provides correctly formatted inputs."
+    - "Implement a central tool dispatcher that the agent's 'Action' step can call to execute the selected tool with the arguments provided by the LLM."
+    - "Establish a process where every new tool is accompanied by a suite of tests (see Epic 7) to verify that the agent can select and use it correctly based on its description."
+  acceptance_criteria:
+    - "A clear and consistent process for defining new tools is established and documented."
+    - "The tool invocation layer can dynamically call the correct tool function based on the LLM's output."
+    - "Tool descriptions and schemas are treated as version-controlled artifacts alongside the tool's code."
+  assigned_to: "LeadDeveloper"
+  epic: "Core Agent Architecture and Development"
+- id: 301
+  title: "Research, Select, and Document Primary and Specialized LLMs"
+  description: "Formally select the Large Language Models that will serve as the reasoning engines for the agent system. This may involve a primary, powerful model for complex reasoning and planning, and potentially smaller, more efficient models for specialized tasks like classification or summarization. The selection must be data-driven and balance performance, capabilities, and cost.[13, 20]"
+  component: "LLM"
+  dependencies:
+    - 102
+  priority: 1
+  status: "pending"
+  command: null
+  task_id: "LLM-SETUP-001"
+  area: "Architecture"
+  actionable_steps:
+    - "Research and shortlist candidate LLMs (e.g., OpenAI GPT-4o, Meta Llama 3.1, Anthropic Claude 3, Mistral Large) based on their documented capabilities.[21, 22, 23]"
+    - "Create a detailed 'LLM Model Selection Matrix' in the project's Confluence space. This matrix must compare models on key criteria: context window size, function calling proficiency, multimodal support, performance on relevant benchmarks (e.g., MMLU, HumanEval), and pricing per million input/output tokens.[24, 25, 26, 27]"
+    - "Select and document the primary model for the main agent brain and any specialized models for specific tools."
+    - "Obtain necessary API keys and access for the selected models."
+  acceptance_criteria:
+    - "The 'LLM Model Selection Matrix' is published and complete in Confluence."
+    - "A final decision on the primary and any specialized LLMs is documented and approved by project leadership."
+    - "API keys for the selected models are securely stored and accessible to the development team."
+  assigned_to: "LeadArchitect"
+  epic: "LLM and Inference Engine Setup"
+- id: 302
+  title: "Implement and Containerize Self-Hosted Inference Server"
+  description: "Set up a self-hosted LLM inference server to gain control over cost, performance, and data privacy. This task involves using a high-performance serving framework like vLLM or Ollama, which are designed for high-throughput, low-latency inference. A key strategic advantage of these frameworks is their provision of an OpenAI-compatible API endpoint. This allows the agent system to be developed against the standard OpenAI API and then seamlessly switched to the self-hosted endpoint for production, decoupling the application logic from the inference backend and providing maximum architectural flexibility.[28, 7, 8, 29]"
+  component: "Infrastructure"
+  dependencies:
+    - 301
+    - 603
+  priority: 2
+  status: "pending"
+  command: "docker build -t llm-inference-server -f Dockerfile.vllm."
+  task_id: "LLM-INFRA-001"
+  area: "DevOps"
+  actionable_steps:
+    - "Select the serving framework (vLLM is recommended for production-grade throughput).[30]"
+    - "Provision the necessary GPU-enabled server infrastructure on the selected hosting platform (from task 603).[9]"
+    - "Write a Dockerfile to containerize the inference server, specifying the base model, hardware requirements, and startup commands.[31, 32]"
+    - "Configure the server to expose an OpenAI-compatible API, including endpoints for chat completions and embeddings."
+    - "Set up an API key for the self-hosted server to ensure secure access.[7, 9]"
+  acceptance_criteria:
+    - "The inference server is successfully deployed and running in a containerized environment."
+    - "The server's `/v1/chat/completions` endpoint is reachable and responds correctly to requests using an OpenAI-compatible client."
+    - "The server successfully loads the selected primary LLM."
+  assigned_to: "DevOpsLead"
+  epic: "LLM and Inference Engine Setup"
+- id: 303
+  title: "Implement Local Inference Environment with llama-cpp-python"
+  description: "Set up a local development environment that allows developers to run quantized versions of the selected LLMs on their own machines (CPU or GPU). This is crucial for rapid iteration, debugging, and testing without incurring API costs or relying on shared development servers. The `llama-cpp-python` library is the standard for this, providing Python bindings for the highly optimized llama.cpp C++ library.[33, 34]"
+  component: "Development Environment"
+  dependencies:
+    - 301
+  priority: 3
+  status: "pending"
+  command: "pip install llama-cpp-python"
+  task_id: "LLM-DEV-001"
+  area: "Development"
+  actionable_steps:
+    - "Document the installation process for `llama-cpp-python` for different operating systems (macOS, Linux, Windows)."
+    - "Provide instructions for installing with hardware acceleration (e.g., Metal for Apple Silicon, CUDA for NVIDIA) by setting the appropriate `CMAKE_ARGS`.[35, 36]"
+    - "Identify and provide links to download quantized GGUF versions of the selected LLMs (e.g., from Hugging Face).[37, 35]"
+    - "Create a sample script demonstrating how to load a GGUF model and perform a basic inference call."
+  acceptance_criteria:
+    - "Developers can successfully run a quantized LLM on their local machines."
+    - "The local setup instructions are clear, documented, and verified to work on target developer machines."
+  assigned_to: "LeadDeveloper"
+  epic: "LLM and Inference Engine Setup"
+- id: 304
+  title: "Configure and Tune Inference Engine Parameters"
+  description: "Optimize the performance of the self-hosted and local inference engines by tuning their configuration parameters. This process involves balancing throughput (requests per second) and latency (time to first token and inter-token latency) to meet the application's performance requirements. Incorrect tuning can lead to underutilized hardware or system instability due to memory issues.[38, 39]"
+  component: "Infrastructure"
+  dependencies:
+    - 302
+    - 303
+  priority: 3
+  status: "pending"
+  command: null
+  task_id: "LLM-INFRA-002"
+  area: "DevOps"
+  actionable_steps:
+    - "For the vLLM production server, tune key parameters such as `gpu_memory_utilization`, `max_num_batched_tokens`, `tensor_parallel_size`, and `pipeline_parallel_size`."
+    - "For local `llama-cpp-python` setups, experiment with `n_gpu_layers` to offload model layers to the GPU and `n_batch` to control parallel processing."
+    - "Benchmark the performance (TTFT, ITL, throughput) under different configurations using a standardized load test."
+    - "Document the optimal parameters for both production and development environments in the project's Confluence space."
+  acceptance_criteria:
+    - "A set of optimal configuration parameters for the inference engines is identified and documented."
+    - "Performance benchmarks validate that the chosen configuration meets the project's latency and throughput goals."
+  assigned_to: "DevOpsLead"
+  epic: "LLM and Inference Engine Setup"
+- id: 401
+  title: "Select, Install, and Configure Atlassian Python Library"
+  description: "Choose and configure the standard Python library for all interactions with the Atlassian suite (Jira and Confluence). The two primary candidates are `jira-python` and `atlassian-python-api`. While `jira-python` is well-established for Jira-specific tasks, `atlassian-python-api` provides a more unified interface for multiple Atlassian products, including Confluence, making it the more suitable choice for this project's requirements. This task ensures a consistent and maintainable approach to all Atlassian API interactions.[40, 41]"
+  component: "Tooling"
+  dependencies:
+    - 102
+  priority: 1
+  status: "pending"
+  command: "pip install atlassian-python-api"
+  task_id: "TOOL-ATLASSIAN-001"
+  area: "Development"
+  actionable_steps:
+    - "Formally select `atlassian-python-api` as the standard library for the project."
+    - "Add the library to the project's `requirements.txt` file."
+    - "Develop a centralized module for managing authentication with the Atlassian APIs, handling API tokens securely via environment variables or a secrets management system."
+    - "Document the chosen library and the authentication process in the developer documentation."
+  acceptance_criteria:
+    - "The `atlassian-python-api` library is added as a project dependency."
+    - "A secure and reusable method for authenticating with Jira and Confluence is implemented."
+  assigned_to: "LeadDeveloper"
+  epic: "External Tool Integration: Atlassian Suite"
+- id: 402
+  title: "Implement Jira Tooling for Agents"
+  description: "Develop a suite of robust tools that enable agents to perform key operations in Jira. These tools should not be thin wrappers around the API calls but must include sophisticated logic to handle the specific behaviors and potential errors of the Jira REST API. For instance, transitioning an issue is a POST request to a specific `/transitions` endpoint and requires a valid transition ID for the issue's current state, which must often be queried first. The tools must be able to handle these multi-step processes and parse complex error messages to provide useful feedback to the agent.[42, 43, 44]"
+  component: "Tooling"
+  dependencies:
+    - 204
+    - 401
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "TOOL-JIRA-001"
+  area: "Development"
+  actionable_steps:
+    - "Create a 'create_jira_issue' tool that wraps the `issue_create` method, accepting parameters for project key, summary, description, and issue type.[45]"
+    - "Create an 'add_jira_comment' tool that wraps the `issue_add_comment` method.[45]"
+    - "Create an 'assign_jira_user' tool that wraps the `assign_issue` method, ensuring it uses the user's accountId as required by the Cloud API.[46]"
+    - "Create a 'transition_jira_issue' tool that first calls `get_issue_transitions` to find the correct transition ID for a given status name, then calls `issue_transition`.[47, 45]"
+    - "For each tool, implement comprehensive error handling to catch and interpret common Jira API errors."
+    - "Write clear, descriptive prompts for each tool as per the 'Tool-Prompt Co-design' process (Task 204)."
+  acceptance_criteria:
+    - "All specified Jira tools are implemented and integrated with the agent's tool invocation layer."
+    - "Each tool includes robust error handling for common API failure modes."
+    - "Each tool is accompanied by a well-defined and tested descriptive prompt."
+    - "A 'Atlassian Tool API Mapping' table is created in Confluence to document the tools, their methods, and API endpoints.[42, 48]"
+  assigned_to: "SeniorDeveloper"
+  epic: "External Tool Integration: Atlassian Suite"
+- id: 403
+  title: "Implement Confluence Tooling for Agents"
+  description: "Develop a suite of tools that enable agents to interact with Confluence for knowledge creation and retrieval. As with the Jira tools, these must be robust and handle the specific requirements of the Confluence REST API. For example, a search tool should be configured to use `siteSearch` to replicate the behavior of the Confluence UI search bar effectively."
+  component: "Tooling"
+  dependencies:
+    - 204
+    - 401
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "TOOL-CONFLUENCE-001"
+  area: "Development"
+  actionable_steps:
+    - "Create a 'create_confluence_page' tool that wraps the `create_page` method, accepting parameters for space, title, and body content."
+    - "Create a 'search_confluence' tool that wraps the `cql` method. The tool's internal logic should construct a CQL query using `siteSearch ~ '{query}'` to ensure comprehensive search results."
+    - "Create an 'append_to_confluence_page' tool that wraps the `append_page` method."
+    - "Implement robust error handling and descriptive prompts for each tool."
+  acceptance_criteria:
+    - "All specified Confluence tools are implemented and integrated with the agent's tool invocation layer."
+    - "The search tool correctly uses `siteSearch` for queries."
+    - "Each tool is accompanied by a well-defined and tested descriptive prompt."
+  assigned_to: "SeniorDeveloper"
+  epic: "External Tool Integration: Atlassian Suite"
+- id: 404
+  title: "Implement Two-Way Linking Tool for Jira and Confluence"
+  description: "Develop a composite tool that automates the process of creating a Jira issue and a related Confluence page, then establishes a two-way link between them. The Atlassian APIs do not provide a single endpoint for this operation, so it must be implemented as a multi-step workflow within the tool itself. This tool will significantly enhance the agent's ability to manage project artifacts in an integrated manner."
+  component: "Tooling"
+  dependencies:
+    - 402
+    - 403
+  priority: 3
+  status: "pending"
+  command: null
+  task_id: "TOOL-LINKING-001"
+  area: "Development"
+  actionable_steps:
+    - "Design the tool to accept inputs for both the Jira issue (project, summary, etc.) and the Confluence page (space, title, etc.)."
+    - "Implement the first step: call the 'create_jira_issue' tool and capture the returned issue key and URL."
+    - "Implement the second step: call the 'create_confluence_page' tool, including the Jira issue key/URL in the page body."
+    - "Implement the third step: call the 'add_jira_comment' tool or an 'edit_issue' tool to add the link to the new Confluence page to the Jira issue."
+    - "Ensure the tool has robust error handling to manage failures at any step of the sequence."
+  acceptance_criteria:
+    - "The tool successfully creates both a Jira issue and a Confluence page."
+    - "The created Jira issue contains a link to the Confluence page."
+    - "The created Confluence page contains a link to the Jira issue."
+    - "The tool correctly handles and reports errors if any of the chained API calls fail."
+  assigned_to: "SeniorDeveloper"
+  epic: "External Tool Integration: Atlassian Suite"
+- id: 501
+  title: "Design and Document the RAG Architecture"
+  description: "Architect the complete Retrieval-Augmented Generation (RAG) pipeline, which allows agents to answer questions and perform tasks using a private knowledge base. This is a core capability for enterprise AI, enabling models to provide answers grounded in specific, up-to-date, and proprietary information rather than relying solely on their general training data. The architecture must define the end-to-end flow from data source to augmented generation and must be designed with evaluability in mind, anticipating the need for specialized RAG quality metrics."
+  component: "RAG"
+  dependencies:
+    - 104
+  priority: 1
+  status: "pending"
+  command: null
+  task_id: "RAG-ARCH-001"
+  area: "Architecture"
+  actionable_steps:
+    - "Diagram the RAG pipeline: Data Ingestion -> Pre-processing (Chunking) -> Vectorization -> Indexing (Vector DB) -> Retrieval -> Prompt Augmentation -> Generation."
+    - "Define the data sources for the knowledge base (e.g., specific Confluence spaces)."
+    - "Specify the strategy for document chunking (e.g., recursive character splitting, semantic chunking)."
+    - "Select the embedding model and vector database technology based on the evaluation in Task 102."
+    - "Document the RAG architecture in the project's Confluence space."
+  acceptance_criteria:
+    - "A detailed RAG architecture diagram and specification are published in Confluence."
+    - "The document clearly defines the data sources, chunking strategy, embedding model, and vector database."
+  assigned_to: "LeadArchitect"
+  epic: "Data Management and RAG Implementation"
+- id: 502
+  title: "Implement Data Ingestion and Processing Pipeline"
+  description: "Build the automated pipeline that extracts data from source systems (initially Confluence), processes it, and prepares it for vectorization. This involves using the Confluence tools to fetch content and applying a chunking strategy to divide large documents into semantically coherent pieces suitable for embedding.[49]"
+  component: "RAG"
+  dependencies:
+    - 501
+    - 403
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "RAG-DEV-001"
+  area: "Development"
+  actionable_steps:
+    - "Develop a connector that uses the 'search_confluence' tool to periodically query for new or updated pages in specified spaces."
+    - "Implement a document loader to extract the text content from the fetched Confluence pages."
+    - "Implement the chosen document chunking strategy to split the text into smaller segments."
+    - "Create a mechanism to handle updates and deletions, ensuring the knowledge base remains current."
+  acceptance_criteria:
+    - "The pipeline can successfully fetch and extract text from Confluence pages."
+    - "Documents are correctly chunked according to the defined strategy."
+    - "The pipeline can run on a schedule to keep the knowledge base synchronized."
+  assigned_to: "SeniorDeveloper"
+  epic: "Data Management and RAG Implementation"
+- id: 503
+  title: "Set Up Vector Database and Embedding Pipeline"
+  description: "Deploy and configure the chosen vector database and implement the pipeline for converting processed text chunks into vector embeddings and storing them. This forms the core of the searchable knowledge library.[22, 49]"
+  component: "RAG"
+  dependencies:
+    - 102
+    - 501
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "RAG-INFRA-001"
+  area: "DevOps"
+  actionable_steps:
+    - "Deploy the selected vector database (e.g., Pinecone, Qdrant) in the production environment."
+    - "Integrate the selected embedding model (e.g., `nomic-embed-text`) into the data processing pipeline."
+    - "Develop the script that takes text chunks from the previous step, generates embeddings, and upserts the vectors along with their source metadata into the vector database."
+    - "Ensure the vector database is configured for optimal performance and scalability."
+  acceptance_criteria:
+    - "The vector database is deployed and accessible."
+    - "The embedding pipeline can successfully convert text chunks to vectors and store them in the database."
+    - "Stored vectors are associated with metadata linking them back to the original source document and chunk."
+  assigned_to: "DevOpsLead"
+  epic: "Data Management and RAG Implementation"
+- id: 504
+  title: "Implement Retrieval Mechanism as an Agent Tool"
+  description: "Build the retrieval function that will be used by the agent to query the knowledge base. This function will take a natural language query, convert it into a vector using the same embedding model, and perform a similarity search against the vector database to find the most relevant document chunks. This retriever will then be wrapped as a tool for the agent to use."
+  component: "RAG"
+  dependencies:
+    - 503
+    - 204
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "RAG-DEV-002"
+  area: "Development"
+  actionable_steps:
+    - "Create a Python function `retrieve_relevant_chunks(query: str)`."
+    - "Inside the function, use the embedding model to vectorize the input `query`."
+    - "Query the vector database with the generated vector to get the top-k most similar document chunks."
+    - "Format the retrieved chunks and their metadata into a string that can be easily added to the agent's prompt."
+    - "Wrap this function as a LangChain tool named 'knowledge_base_search' with a clear description for the agent."
+  acceptance_criteria:
+    - "The retrieval function returns the most relevant text chunks for a given query."
+    - "The function is successfully wrapped as a tool and is callable by the agent."
+    - "The tool's description is clear enough for the agent to understand when to use it for answering user questions."
+  assigned_to: "SeniorDeveloper"
+  epic: "Data Management and RAG Implementation"
+- id: 601
+  title: "Containerize the Agent Application and Inference Server"
+  description: "Package the entire application, including the agent core, tools, and the self-hosted inference server, into Docker containers. Containerization is essential for creating a consistent, reproducible, and portable deployment artifact that can be easily managed across different environments (development, staging, production).[31, 50]"
+  component: "Deployment"
+  dependencies:
+    - 201
+    - 302
+  priority: 1
+  status: "pending"
+  command: "docker-compose up --build"
+  task_id: "DEPLOY-001"
+  area: "DevOps"
+  actionable_steps:
+    - "Write a `Dockerfile` for the main Python application that installs all dependencies from `requirements.txt` and defines the entrypoint."
+    - "Use or adapt the official `Dockerfile` for the chosen inference server (e.g., vLLM) to ensure it's configured correctly for the production environment.[32]"
+    - "Create a `docker-compose.yaml` file to orchestrate the running of the application container, the inference server container, and any other services (like the vector database) for local development and testing."
+    - "Implement a `.dockerignore` file to prevent unnecessary files from being included in the container images, reducing build times and image size."
+  acceptance_criteria:
+    - "The application can be started locally using a single `docker-compose up` command."
+    - "All services (agent application, inference server, database) are running and can communicate with each other within the Docker network."
+    - "Container images are built successfully and stored in a container registry."
+  assigned_to: "DevOpsLead"
+  epic: "Application Deployment and Infrastructure"
+- id: 602
+  title: "Set Up Continuous Integration and Continuous Deployment (CI/CD) Pipeline"
+  description: "Automate the process of building, testing, and deploying the application to ensure rapid, reliable, and consistent releases. The CI/CD pipeline will be triggered on code commits, automatically running the test suite and deploying successful builds to the appropriate environment.[1, 50]"
+  component: "Deployment"
+  dependencies:
+    - 601
+    - 701
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "DEPLOY-002"
+  area: "DevOps"
+  actionable_steps:
+    - "Choose a CI/CD platform (e.g., GitHub Actions, Jenkins)."
+    - "Configure the CI pipeline to: check out the code, build the Docker images, run the unit and integration test suite (from Epic 7)."
+    - "Configure the CD pipeline to: push the built Docker images to a container registry upon a successful CI run."
+    - "Implement deployment steps to pull the new images and deploy them to the staging environment for further testing."
+    - "Create a manual approval gate for promoting builds from staging to production."
+  acceptance_criteria:
+    - "A code commit to the main branch automatically triggers a build and test run."
+    - "The pipeline fails if any tests fail, preventing the deployment of broken code."
+    - "Successful builds are automatically deployed to the staging environment."
+    - "Production deployments are gated by a manual approval step."
+  assigned_to: "DevOpsLead"
+  epic: "Application Deployment and Infrastructure"
+- id: 603
+  title: "Select and Configure Production Hosting Platform"
+  description: "Choose and configure the cloud infrastructure where the production application will be hosted. This decision is heavily constrained by the choice of inference engine. If a self-hosted, GPU-accelerated model is used, the platform must provide the necessary specialized compute instances. Standard PaaS offerings may be insufficient. Platforms like Render or Fly.io offer more granular control over compute resources and are better suited for such workloads compared to traditional options like Heroku.[51, 52]"
+  component: "Infrastructure"
+  dependencies:
+    - 102
+    - 302
+  priority: 1
+  status: "pending"
+  command: null
+  task_id: "DEPLOY-003"
+  area: "Infrastructure"
+  actionable_steps:
+    - "Based on the requirements from Task 302, evaluate PaaS/IaaS providers that offer the required GPU instances (e.g., NVIDIA A100)."
+    - "Compare providers on cost, scalability, ease of use, and available regions."
+    - "Provision the necessary infrastructure on the chosen platform (e.g., Render, Fly.io, or a dedicated cloud provider like AWS/GCP)."
+    - "Configure networking, security groups, and environment variables for the production environment."
+  acceptance_criteria:
+    - "A hosting platform that meets the project's technical and budget requirements is selected and approved."
+    - "The production infrastructure is provisioned and configured."
+    - "The development team has secure access to the production environment for deployment and monitoring."
+  assigned_to: "DevOpsLead"
+  epic: "Application Deployment and Infrastructure"
+- id: 604
+  title: "Implement Production Deployment and Scaling Strategy"
+  description: "Configure the production environment to be scalable, resilient, and support zero-downtime deployments. This involves setting up auto-scaling to handle variable loads and implementing a safe deployment strategy to roll out updates without interrupting service.[1]"
+  component: "Deployment"
+  dependencies:
+    - 602
+    - 603
+  priority: 3
+  status: "pending"
+  command: null
+  task_id: "DEPLOY-004"
+  area: "DevOps"
+  actionable_steps:
+    - "Configure auto-scaling rules for the application and inference server services based on metrics like CPU/GPU utilization or request count."
+    - "Implement a load balancer to distribute traffic across multiple instances of the application."
+    - "Integrate a blue-green or canary deployment strategy into the CD pipeline to allow for safe, zero-downtime releases."
+    - "Establish a backup and disaster recovery plan for all stateful components, including databases."
+  acceptance_criteria:
+    - "The production environment can automatically scale up and down based on load."
+    - "New versions of the application can be deployed without causing service interruptions."
+    - "A documented backup and recovery procedure is in place."
+  assigned_to: "DevOpsLead"
+  epic: "Application Deployment and Infrastructure"
+- id: 701
+  title: "Develop Unit and Integration Test Suite"
+  description: "Establish the foundation of the testing strategy by creating a suite of automated tests for the non-probabilistic components of the system. This includes writing unit tests for individual functions and tools, and integration tests to verify the interactions between different modules. Mocking external dependencies, such as the Atlassian APIs, is crucial for ensuring these tests are fast, deterministic, and can run in a CI/CD environment without relying on live services.[14, 53, 54]"
+  component: "QA"
+  dependencies:
+    - 204
+    - 402
+    - 403
+  priority: 1
+  status: "pending"
+  command: "pytest"
+  task_id: "QA-TEST-001"
+  area: "Testing"
+  actionable_steps:
+    - "Set up the `pytest` framework for the project."
+    - "Use `pytest-mock` to create mock objects for external API clients (e.g., Jira, Confluence)."
+    - "Write unit tests for each tool, mocking its external dependencies and asserting its internal logic."
+    - "Write integration tests to verify that the core agent loop can correctly parse LLM output and dispatch to the appropriate (mocked) tool."
+    - "Integrate the test suite into the CI pipeline (Task 602) to run on every commit."
+  acceptance_criteria:
+    - "The project has a comprehensive suite of unit and integration tests with high code coverage for non-LLM components."
+    - "Tests are fully automated and run as part of the CI pipeline."
+    - "External API calls are successfully mocked, allowing tests to run in isolation."
+  assigned_to: "QALead"
+  epic: "Testing, Evaluation, and Quality Assurance"
+- id: 702
+  title: "Create and Maintain the Evaluation Dataset"
+  description: "Build and curate a 'golden' evaluation dataset that serves as the ground truth for testing the agent's performance on key tasks. This dataset is a critical asset for LLM application development, as it allows for reproducible, example-based testing of the system's end-to-end behavior. The dataset should contain a variety of inputs, expected outputs, and the ideal context required for the agent to succeed.[55, 56]"
+  component: "QA"
+  dependencies:
+    - 101
+  priority: 1
+  status: "pending"
+  command: null
+  task_id: "QA-DATA-001"
+  area: "Testing"
+  actionable_steps:
+    - "Manually create an initial set of high-quality evaluation examples, covering the most critical use cases and edge cases."
+    - "Each example should include an input prompt, the ideal final answer ('expected_output'), and the specific documents or context the agent should retrieve ('context')."
+    - "Use an LLM to augment the dataset by generating variations of existing questions or creating new question-answer pairs based on the project's knowledge base."
+    - "Store the evaluation dataset in a version-controlled format (e.g., JSON, CSV) within the project repository."
+  acceptance_criteria:
+    - "An evaluation dataset covering at least 80% of the defined critical use cases is created."
+    - "The dataset is version-controlled and integrated into the testing pipeline."
+    - "A process for continuously adding new examples to the dataset based on production findings is established."
+  assigned_to: "QALead"
+  epic: "Testing, Evaluation, and Quality Assurance"
+- id: 703
+  title: "Implement LLM-as-Judge Evaluators"
+  description: "Develop a suite of automated evaluators that use a powerful LLM (the 'judge') to assess the quality of the agent's output (the 'candidate') on subjective criteria that are difficult to measure with traditional code. This 'LLM-as-a-judge' pattern is essential for scaling up evaluation of aspects like coherence, relevance, and groundedness. The judge LLM is given a specific prompt, the candidate's output, and the ground truth (from the evaluation dataset), and is asked to provide a score and a rationale for its decision."
+  component: "QA"
+  dependencies:
+    - 702
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "QA-EVAL-001"
+  area: "Testing"
+  actionable_steps:
+    - "Select a capable and instruction-following LLM to act as the judge (e.g., GPT-4o)."
+    - "Design and test prompt templates for the judge to evaluate different quality dimensions (e.g., 'Is this answer relevant to the user's question?', 'Is this summary factually consistent with the provided text?')."
+    - "Create a framework to run these evaluations against the entire evaluation dataset and aggregate the scores."
+    - "Validate the judge's performance by manually reviewing a subset of its evaluations to check for false positives/negatives."
+  acceptance_criteria:
+    - "Automated evaluators for key quality metrics (relevance, coherence, toxicity) are implemented."
+    - "The evaluation framework can produce a quantitative report of the agent's performance on the evaluation dataset."
+    - "The judge prompts are version-controlled and documented."
+  assigned_to: "QALead"
+  epic: "Testing, Evaluation, and Quality Assurance"
+- id: 704
+  title: "Implement Hallucination and Factual Consistency Checks"
+  description: "Develop specific tests to detect and mitigate LLM hallucinations, where the model generates plausible but incorrect or non-factual information. This is one of the most significant risks in production LLM applications. The primary strategy is to ensure that when the agent uses its RAG tool, its final answer is factually grounded in the retrieved context.[55, 57]"
+  component: "QA"
+  dependencies:
+    - 703
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "QA-EVAL-002"
+  area: "Testing"
+  actionable_steps:
+    - "In the system prompt for the generation step, explicitly instruct the model to only use the provided context and to state when it does not have enough information to answer."
+    - "Use an LLM-as-a-judge evaluator (from Task 703) specifically for 'Groundedness' or 'Factual Consistency'."
+    - "The judge's prompt for this task will take the user's query, the retrieved context, and the agent's final answer, and ask: 'Is every statement in the answer supported by the provided context? Answer yes or no, and explain why.'"
+    - "Run these checks as part of the main evaluation suite."
+  acceptance_criteria:
+    - "A specific test for factual consistency is implemented and integrated into the CI/CD pipeline."
+    - "The agent's system prompt is updated to discourage hallucination."
+    - "The project has a quantifiable metric for the hallucination rate, which is tracked over time."
+  assigned_to: "QALead"
+  epic: "Testing, Evaluation, and Quality Assurance"
+- id: 705
+  title: "Implement RAG-Specific Evaluation Suite"
+  description: "Establish a dedicated evaluation suite for the Retrieval-Augmented Generation (RAG) pipeline. A RAG system has multiple potential points of failure that require distinct metrics. The quality of the final answer depends on the quality of the retrieval step. This task implements the 'RAG Triad' of metrics: Context Relevance, Groundedness, and Answer Relevance. This specialized suite is essential for diagnosing and tuning the RAG pipeline effectively."
+  component: "QA"
+  dependencies:
+    - 504
+    - 703
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "QA-EVAL-003"
+  area: "Testing"
+  actionable_steps:
+    - "Using the LLM-as-a-judge framework, implement an evaluator for 'Context Relevance': Does the retrieved context match the user's query?"
+    - "Implement the evaluator for 'Groundedness' (Factual Consistency) as defined in Task 704."
+    - "Implement an evaluator for 'Answer Relevance': Is the final answer relevant to the original user query?"
+    - "Create a dedicated RAG evaluation run that executes this triad of tests against the evaluation dataset."
+    - "Use the results to tune the RAG pipeline, including the chunking strategy and the number of retrieved documents."
+  acceptance_criteria:
+    - "The RAG pipeline is evaluated on all three metrics of the RAG triad."
+    - "Quantitative scores for Context Relevance, Groundedness, and Answer Relevance are generated for each test run."
+    - "The results are used to create actionable tasks for improving the RAG system."
+  assigned_to: "QALead"
+  epic: "Testing, Evaluation, and Quality Assurance"
+- id: 706
+  title: "Implement Performance and Load Testing"
+  description: "Conduct performance and load testing to ensure the application meets its service-level objectives (SLOs) for latency and throughput and can handle the expected user load in production. This involves simulating concurrent users and measuring the system's response times and resource utilization.[1, 39]"
+  component: "QA"
+  dependencies:
+    - 604
+  priority: 3
+  status: "pending"
+  command: null
+  task_id: "QA-PERF-001"
+  area: "Testing"
+  actionable_steps:
+    - "Define performance SLOs for key user interactions (e.g., 'p95 latency for a chat response must be under 3 seconds')."
+    - "Use a load testing tool (e.g., k6, Locust) to simulate realistic traffic patterns against the staging environment."
+    - "Measure key metrics during the test, including time-to-first-token (TTFT), inter-token-latency (ITL), requests per second, and error rates."
+    - "Monitor server-side resource utilization (CPU, GPU, memory) during the test to identify bottlenecks."
+    - "Analyze the results and create performance optimization tasks if SLOs are not met."
+  acceptance_criteria:
+    - "A repeatable load testing script is created and version-controlled."
+    - "The system is proven to meet its defined performance SLOs under the expected production load."
+    - "Performance bottlenecks are identified and documented for remediation."
+  assigned_to: "QALead"
+  epic: "Testing, Evaluation, and Quality Assurance"
+- id: 801
+  title: "Implement Centralized and Structured Logging"
+  description: "Establish a comprehensive and structured logging strategy across all application components. Logs should be centralized and formatted (e.g., as JSON) to enable efficient searching, filtering, and analysis. Each log entry must contain sufficient context, such as trace and span IDs, to be correlated with other observability signals.[14, 58]"
+  component: "Observability"
+  dependencies:
+    - 104
+  priority: 1
+  status: "pending"
+  command: null
+  task_id: "MONITOR-LOG-001"
+  area: "Monitoring"
+  actionable_steps:
+    - "Choose a logging library and standard for the project (e.g., Python's built-in `logging` with a JSON formatter)."
+    - "Instrument all application services to emit structured logs."
+    - "Configure a log aggregation system (e.g., ELK Stack, Grafana Loki, or a cloud provider's service) to centralize logs from all containers."
+    - "Ensure all log entries include correlation IDs (traceId, spanId) from the tracing system."
+  acceptance_criteria:
+    - "All application services produce logs in a consistent JSON format."
+    - "Logs from all production services are collected and searchable in a central location."
+    - "Log entries can be filtered by trace ID to view the complete log history of a single request."
+  assigned_to: "DevOpsLead"
+  epic: "Monitoring, Observability, and Cost Management"
+- id: 802
+  title: "Implement Distributed Tracing with OpenTelemetry"
+  description: "Instrument the application with OpenTelemetry to enable distributed tracing. This will provide end-to-end visibility into how requests flow through the various microservices of the system, from the API gateway to the agent orchestrator, tool APIs, and the LLM inference server. Tracing is essential for debugging latency issues and understanding complex system interactions.[59, 60, 58, 61]"
+  component: "Observability"
+  dependencies:
+    - 801
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "MONITOR-TRACE-001"
+  area: "Monitoring"
+  actionable_steps:
+    - "Install the OpenTelemetry Python SDK and relevant auto-instrumentation libraries (e.g., for Flask, requests)."
+    - "Configure auto-instrumentation to automatically trace requests through common frameworks."
+    - "Manually instrument custom code sections, such as the agent's planning and tool execution steps, to create custom spans."
+    - "Configure an OTLP (OpenTelemetry Protocol) exporter to send trace data to a compatible backend (e.g., Jaeger, Grafana Tempo)."
+  acceptance_criteria:
+    - "A single user request generates a complete, end-to-end trace that visualizes the flow across all services."
+    - "Traces include spans for key agent operations like 'LLM_planning', 'tool_selection', and 'tool_execution'."
+    - "The tracing backend is successfully receiving and displaying trace data."
+  assigned_to: "SeniorDeveloper"
+  epic: "Monitoring, Observability, and Cost Management"
+- id: 803
+  title: "Implement Metrics Collection with Prometheus"
+  description: "Expose key system and application metrics for monitoring, visualization, and alerting. Prometheus is the industry standard for metrics-based monitoring. This task involves instrumenting the application to expose a `/metrics` endpoint that a Prometheus server can scrape.[62, 63]"
+  component: "Observability"
+  dependencies:
+    - 801
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "MONITOR-METRIC-001"
+  area: "Monitoring"
+  actionable_steps:
+    - "Install the Prometheus Python client library."
+    - "Instrument the application code to expose custom metrics, such as API request latency, error counts, and token usage."
+    - "If using vLLM, configure Prometheus to scrape the built-in `/metrics` endpoint that vLLM provides.[39]"
+    - "Deploy a Prometheus server to scrape the metrics endpoints of all application services."
+  acceptance_criteria:
+    - "The application exposes a Prometheus-compatible `/metrics` endpoint."
+    - "The Prometheus server is successfully scraping and storing metrics from all services."
+    - "Key metrics like request latency and error rates are available for querying."
+  assigned_to: "DevOpsLead"
+  epic: "Monitoring, Observability, and Cost Management"
+- id: 804
+  title: "Create Unified Monitoring Dashboards"
+  description: "Develop a set of dashboards to visualize the logs, traces, and metrics collected from the system. A unified view is essential for effective monitoring and rapid incident response. Grafana is the ideal tool for this, as it can connect to various data sources like Prometheus, Loki (for logs), and Jaeger/Tempo (for traces).[64, 65]"
+  component: "Observability"
+  dependencies:
+    - 802
+    - 803
+  priority: 3
+  status: "pending"
+  command: null
+  task_id: "MONITOR-DASH-001"
+  area: "Monitoring"
+  actionable_steps:
+    - "Deploy a Grafana instance."
+    - "Configure data sources in Grafana to connect to Prometheus, the log aggregator, and the tracing backend."
+    - "Create a main 'System Health' dashboard that displays key performance indicators (KPIs) like overall latency, error rate, and throughput."
+    - "Create detailed dashboards for each service, showing service-specific metrics."
+    - "Set up alerts in Grafana to notify the on-call team of any metric that breaches its predefined threshold."
+  acceptance_criteria:
+    - "A set of Grafana dashboards provides a comprehensive, real-time view of the system's health."
+    - "Dashboards allow for correlation between metrics, logs, and traces."
+    - "An alerting system is in place to notify engineers of production issues."
+  assigned_to: "DevOpsLead"
+  epic: "Monitoring, Observability, and Cost Management"
+- id: 805
+  title: "Implement LLM API Cost Tracking and Management"
+  description: "Develop and implement a system for tracking the token consumption and associated costs of all calls to external LLM APIs (e.g., OpenAI). Cost management is a critical operational concern for LLM applications, and without dedicated tracking, expenses can quickly become unpredictable and excessive."
+  component: "Observability"
+  dependencies:
+    - 301
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "MONITOR-COST-001"
+  area: "Monitoring"
+  actionable_steps:
+    - "Use a library like `openai-cost-tracker` or create a custom wrapper around the OpenAI client."
+    - "The wrapper must extract the `usage` object from every API response, which contains `prompt_tokens` and `completion_tokens`."
+    - "Calculate the cost of each request based on the known pricing for the specific model used.[26, 27, 66]"
+    - "Log the token counts and calculated cost for every API call."
+    - "Aggregate this data to create a cost monitoring dashboard in Grafana (Task 804)."
+    - "Set up budget alerts to notify the team when cumulative costs exceed a certain threshold."
+  acceptance_criteria:
+    - "Every call to a paid LLM API is logged with its token usage and calculated cost."
+    - "A dashboard displays real-time and historical cost data, broken down by model."
+    - "An alerting mechanism is in place for budget overruns."
+  assigned_to: "LeadDeveloper"
+  epic: "Monitoring, Observability, and Cost Management"
+- id: 806
+  title: "Integrate AI Quality Metrics into Observability Platform"
+  description: "Bridge the gap between system observability and AI quality evaluation. This task involves feeding the results from the LLM evaluation suite (Epic 7) into the main observability platform. An application can be technically healthy (low latency, no errors) but produce poor quality or harmful output. By integrating AI quality scores (e.g., groundedness, relevance) as custom metrics or trace attributes, the team can monitor and alert on the actual quality of the agent's behavior, not just its operational status."
+  component: "Observability"
+  dependencies:
+    - 703
+    - 704
+    - 705
+    - 804
+  priority: 3
+  status: "pending"
+  command: null
+  task_id: "MONITOR-AIQA-001"
+  area: "Monitoring"
+  actionable_steps:
+    - "Modify the evaluation framework (from Epic 7) to export its results (e.g., pass/fail rates, average scores) as Prometheus metrics."
+    - "Alternatively, add the quality scores as attributes/tags to the corresponding distributed trace for each request."
+    - "Update the Grafana dashboards to include visualizations for AI quality metrics alongside system performance metrics."
+    - "Create alerts for significant drops in AI quality scores (e.g., if the hallucination rate exceeds a threshold)."
+  acceptance_criteria:
+    - "AI quality metrics (e.g., groundedness, answer relevance) are visible in the production monitoring dashboards."
+    - "It is possible to correlate a specific user request (trace) with its associated AI quality scores."
+    - "Alerts are configured to trigger on regressions in AI quality."
+  assigned_to: "QALead"
+  epic: "Monitoring, Observability, and Cost Management"
+- id: 901
+  title: "Implement and Test Prompt Injection Defenses"
+  description: "Design and implement a multi-layered defense against prompt injection attacks, where malicious user input is crafted to hijack the agent's instructions. This is a primary security threat for LLM applications. The strategy will involve input filtering, using a 'guardrail' LLM to screen prompts, and treating all LLM-generated outputs as untrusted until sanitized."
+  component: "Security"
+  dependencies:
+    - 201
+  priority: 1
+  status: "pending"
+  command: null
+  task_id: "SEC-PROMPT-001"
+  area: "Security"
+  actionable_steps:
+    - "Implement an input sanitization layer to filter or flag suspicious patterns or keywords."
+    - "Design a 'guardrail' agent using a separate, instruction-tuned LLM (e.g., Llama Guard) to classify incoming prompts and block potential attacks."
+    - "Treat all outputs from the primary LLM that are intended for execution (e.g., tool arguments) as untrusted. Sanitize and validate these outputs before they are passed to any tool."
+    - "Develop a suite of adversarial tests that attempt to bypass the implemented defenses."
+  acceptance_criteria:
+    - "A layered defense mechanism against prompt injection is implemented and active in production."
+    - "The system can successfully detect and block a predefined set of common prompt injection attacks."
+    - "All LLM outputs are sanitized before being used in tool calls."
+  assigned_to: "SecurityLead"
+  epic: "Security, Compliance, and Governance"
+- id: 902
+  title: "Implement PII Detection, Redaction, and Escalation Pathway"
+  description: "Develop a robust system to prevent Personally Identifiable Information (PII) from being inadvertently processed by the LLM or leaked into logs. This involves automatically detecting and redacting PII from both user inputs and agent outputs, and establishing a formal escalation pathway for any detected incidents."
+  component: "Security"
+  dependencies:
+    - 201
+  priority: 1
+  status: "pending"
+  command: null
+  task_id: "SEC-PII-001"
+  area: "Security"
+  actionable_steps:
+    - "Integrate a PII detection tool or library into the application's input and output processing pipeline."
+    - "Configure the system to automatically redact or replace detected PII with placeholders before sending data to the LLM."
+    - "Ensure that logging mechanisms (Task 801) do not record raw PII."
+    - "Develop and document a formal PII incident response and escalation plan, defining roles and responsibilities for handling potential data exposures."
+    - "Classify all data stores to identify where sensitive information resides and apply appropriate protections."
+  acceptance_criteria:
+    - "An automated PII detection and redaction system is active on all inputs and outputs."
+    - "Production logs are verified to contain no PII."
+    - "A documented PII escalation pathway is approved and published in Confluence."
+  assigned_to: "SecurityLead"
+  epic: "Security, Compliance, and Governance"
+- id: 903
+  title: "Conduct Compliance Requirements Analysis and Gap Assessment"
+  description: "Perform a formal analysis of all applicable regulatory and compliance frameworks (e.g., HIPAA, ISO 27001, FISMA) based on the application's intended use and data types. This task involves identifying all relevant controls and conducting a gap analysis to determine what security measures and processes need to be implemented to achieve compliance."
+  component: "Compliance"
+  dependencies:
+    - 101
+  priority: 1
+  status: "pending"
+  command: null
+  task_id: "SEC-COMPLIANCE-001"
+  area: "Compliance"
+  actionable_steps:
+    - "Engage legal and compliance teams to determine the full scope of regulatory obligations."
+    - "For each applicable framework (HIPAA, ISO 27001, FISMA), review the specific requirements and controls."
+    - "Conduct a gap analysis comparing the current system architecture and planned features against the compliance requirements."
+    - "Create a detailed remediation plan, documenting each gap and the tasks required to close it. This plan will generate new tasks in the project backlog."
+  acceptance_criteria:
+    - "A comprehensive list of all applicable compliance requirements is documented."
+    - "A formal gap analysis report is completed and published in Confluence."
+    - "A remediation plan with actionable tasks is created in Jira."
+  assigned_to: "SecurityLead"
+  epic: "Security, Compliance, and Governance"
+- id: 904
+  title: "Implement Access Control for Tool APIs using OAuth 2.0"
+  description: "Secure the external tool APIs by implementing the OAuth 2.0 authorization framework. This is a critical measure for enforcing the principle of least privilege and reducing the 'blast radius' of a potentially compromised agent. Each agent or tool will be issued an access token with a specific set of 'scopes' that grant it permission to perform only its intended actions and nothing more."
+  component: "Security"
+  dependencies:
+    - 204
+    - 903
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "SEC-OAUTH-001"
+  area: "Security"
+  actionable_steps:
+    - "Set up an OAuth 2.0 authorization server."
+    - "Define a granular set of scopes for the tool APIs (e.g., `jira:issue:create`, `confluence:page:read`)."
+    - "Modify the tool invocation layer to require a valid OAuth 2.0 access token for all API calls."
+    - "Implement logic within the tool APIs to validate the incoming token and check that it contains the required scope for the requested operation."
+    - "Issue unique, narrowly-scoped tokens to each agent or agent type."
+  acceptance_criteria:
+    - "All tool APIs are protected by OAuth 2.0."
+    - "API calls with a missing or invalid token are rejected with a 401/403 error."
+    - "API calls with a valid token but insufficient scope are rejected."
+    - "The list of defined scopes is documented."
+  assigned_to: "SecurityLead"
+  epic: "Security, Compliance, and Governance"
+- id: 905
+  title: "Design and Implement Human-in-the-Loop (HITL) Governance Workflows"
+  description: "Integrate human oversight into the agent's workflow for high-stakes or ambiguous decisions. HITL is not just a feature but a core governance and safety mechanism. It ensures that fully autonomous actions are not taken in sensitive contexts, providing a crucial checkpoint for human judgment, review, and approval. Different HITL patterns can be used depending on the need: pre-processing (human guides the task), in-the-loop (agent pauses for approval), and post-processing (human reviews the output).[67, 68, 69, 70]"
+  component: "Agent Core"
+  dependencies:
+    - 201
+    - 903
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "SEC-HITL-001"
+  area: "Development"
+  actionable_steps:
+    - "Identify all agent actions that are considered high-risk or require human approval (e.g., deleting data, sending external communications)."
+    - "Design an 'in-the-loop' workflow where the agent, before executing a high-risk action, pauses and sends a request for approval to a human reviewer."
+    - "Develop a user interface (or integrate with a tool like Slack) for human reviewers to approve or reject the agent's proposed action."
+    - "Implement logic in the agent to proceed only upon receiving approval, and to handle rejections gracefully (e.g., by trying a different approach)."
+  acceptance_criteria:
+    - "A list of high-risk actions requiring human approval is defined and documented."
+    - "The agent correctly pauses execution and awaits human input before performing a high-risk action."
+    - "A functional interface exists for human reviewers to approve or deny agent actions."
+  assigned_to: "LeadDeveloper"
+  epic: "Security, Compliance, and Governance"
+- id: 906
+  title: "Define and Implement Data Governance and Security Policies"
+  description: "Formalize the organization's approach to information security by creating and implementing a comprehensive set of policies as required by frameworks like ISO 27001 and FISMA. This includes defining policies for access control, data classification, incident response, and employee training. These documented policies are the foundation of a defensible security posture and are essential for audits."
+  component: "Compliance"
+  dependencies:
+    - 903
+  priority: 1
+  status: "pending"
+  command: null
+  task_id: "SEC-POLICY-001"
+  area: "Compliance"
+  actionable_steps:
+    - "Draft a formal Information Security Management System (ISMS) policy document."
+    - "Create specific sub-policies for key areas: Access Control, Data Encryption, Incident Response, Data Disposal, and Acceptable Use."
+    - "Develop a Risk Assessment and Treatment methodology."
+    - "Publish all policies to a central, accessible location in Confluence."
+    - "Conduct training sessions to ensure all team members understand their responsibilities under these policies."
+  acceptance_criteria:
+    - "A complete set of ISMS policies is written, approved, and published."
+    - "A risk register is created and maintained."
+    - "Records of employee training on security policies are kept."
+  assigned_to: "SecurityLead"
+  epic: "Security, Compliance, and Governance"
+- id: 1001
+  title: "Create and Publish Developer Documentation"
+  description: "Generate comprehensive technical documentation for the project to ensure its long-term maintainability and to facilitate onboarding of new developers. The documentation should cover the system architecture, code structure, API specifications, and setup instructions. Using a documentation generator like MkDocs allows for the automatic creation of documentation from source code docstrings and Markdown files.[71, 72]"
+  component: "Documentation"
+  dependencies:
+    - 104
+    - 204
+    - 402
+    - 403
+    - 501
+  priority: 2
+  status: "pending"
+  command: "mkdocs build"
+  task_id: "DOCS-DEV-001"
+  area: "Documentation"
+  actionable_steps:
+    - "Set up an MkDocs project within the repository."
+    - "Write high-level documentation in Markdown files for the architecture, setup guides, and key concepts."
+    - "Ensure all public functions and classes in the Python code have clear, well-formatted docstrings."
+    - "Configure `mkdocstrings` to automatically pull these docstrings into the documentation site."
+    - "Set up a CI/CD job to automatically build and deploy the documentation to a static hosting site (e.g., GitHub Pages) on every update."
+  acceptance_criteria:
+    - "A dedicated documentation site for the project is live and accessible."
+    - "The documentation covers architecture, developer setup, and API/tool references."
+    - "The documentation is automatically updated with changes to the code."
+  assigned_to: "LeadDeveloper"
+  epic: "Documentation and Handoff"
+- id: 1002
+  title: "Create User and Administrator Guides in Confluence"
+  description: "Develop user-facing and administrator-facing documentation to explain how to use and manage the agent system. This documentation should be non-technical and hosted in the project's Confluence space for easy access by business users and system administrators."
+  component: "Documentation"
+  dependencies:
+    - 101
+    - 103
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "DOCS-USER-001"
+  area: "Documentation"
+  actionable_steps:
+    - "Write a User Guide explaining the agent's capabilities and how to interact with it effectively."
+    - "Write an Administrator Guide detailing configuration options, user management, and how to view monitoring dashboards."
+    - "Create 'How-To' articles for common tasks."
+    - "Organize all documentation within the Confluence space using a clear and logical page hierarchy."
+  acceptance_criteria:
+    - "A comprehensive User Guide is published in Confluence."
+    - "A comprehensive Administrator Guide is published in Confluence."
+    - "The documentation is reviewed and approved by a non-technical stakeholder."
+  assigned_to: "ProjectManager"
+  epic: "Documentation and Handoff"
+- id: 1003
+  title: "Develop Training Materials and Conduct Operational Handoff"
+  description: "Prepare and deliver training materials to the operations and support teams who will be responsible for maintaining the system in production. A formal handoff process is crucial for ensuring a smooth transition from development to operations."
+  component: "Project Management"
+  dependencies:
+    - 1001
+    - 1002
+  priority: 3
+  status: "pending"
+  command: null
+  task_id: "PROJ-HANDOFF-001"
+  area: "Handoff"
+  actionable_steps:
+    - "Create operational runbooks for common incident response scenarios (e.g., 'What to do when the cost alert fires')."
+    - "Prepare presentation slides and training materials."
+    - "Conduct interactive training sessions with the operations and support teams."
+    - "Establish a clear process for escalating issues from the support team back to the development team."
+    - "Formally transfer ownership of the production system to the operations team."
+  acceptance_criteria:
+    - "Operational runbooks are created and stored in Confluence."
+    - "Training sessions have been conducted and attendance is logged."
+    - "The handoff is formally signed off by both the development and operations team leads."
+  assigned_to: "ProjectManager"
+  epic: "Documentation and Handoff"
+- id: 1004
+  title: "Establish and Implement Prompt Management and Versioning Strategy"
+  description: "Treat all prompts (system prompts, tool descriptions, evaluator prompts) as first-class code artifacts. The behavior of an LLM application is critically dependent on these natural language instructions. Without a formal management and versioning strategy, the system becomes difficult to debug, reproduce, and maintain. This task establishes a centralized, version-controlled repository for all prompts, ensuring they are managed with the same rigor as source code.[20, 16]"
+  component: "Architecture"
+  dependencies:
+    - 104
+  priority: 1
+  status: "pending"
+  command: null
+  task_id: "PROJ-ARCH-003"
+  area: "Architecture"
+  actionable_steps:
+    - "Create a dedicated directory in the project's Git repository for storing all prompt templates."
+    - "Establish a clear naming convention and structure for organizing prompts."
+    - "Implement a loading mechanism in the application code to fetch prompts from this version-controlled location, rather than hardcoding them."
+    - "Ensure that any changes to prompts follow the standard code review and approval process."
+    - "Document the purpose, expected inputs, and expected behavior of each critical prompt in the developer documentation (Task 1001)."
+  acceptance_criteria:
+    - "All prompts are stored in a version-controlled repository."
+    - "The application loads prompts dynamically from the repository."
+    - "A documented process for managing and updating prompts is in place."
+  assigned_to: "LeadArchitect"
+  epic: "Documentation and Handoff"
