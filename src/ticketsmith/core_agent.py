@@ -3,6 +3,8 @@ from __future__ import annotations
 import re
 from typing import Any, Callable, Dict
 
+from .memory import ConversationBuffer, SimpleVectorStore
+
 from langgraph import graph
 
 
@@ -10,17 +12,24 @@ class CoreAgent:
     """Simple ReAct agent using a LangGraph state machine."""
 
     def __init__(
-        self, llm: Callable[[str], str], tools: Dict[str, Callable[..., Any]]
+        self,
+        llm: Callable[[str], str],
+        tools: Dict[str, Callable[..., Any]],
+        conversation_buffer: ConversationBuffer | None = None,
+        vector_store: SimpleVectorStore | None = None,
     ) -> None:
         """Create a CoreAgent.
 
         Args:
-            llm: Function that generates a thought and action text from a
-                prompt.
+            llm: Function that generates agent output from a prompt.
             tools: Mapping of tool names to callables.
+            conversation_buffer: Optional buffer for short-term memory.
+            vector_store: Optional long-term memory store.
         """
         self.llm = llm
         self.tools = tools
+        self.conversation_buffer = conversation_buffer or ConversationBuffer()
+        self.vector_store = vector_store
         self._graph = self._build_graph()
 
     @staticmethod
@@ -72,6 +81,8 @@ class CoreAgent:
     def _build_prompt(state: Dict[str, Any]) -> str:
         """Build the prompt for the LLM."""
         prompt = ""
+        if "context" in state:
+            prompt += f"Context: {state['context']}\n"
         for step in state.get("history", []):
             prompt += f"Thought: {step['thought']}\n"
             prompt += f"Action: {step['action']}\n"
@@ -88,7 +99,16 @@ class CoreAgent:
             "tools": self.tools,
             "llm": self.llm,
         }
-        return self._graph.invoke(state)
+        if self.conversation_buffer:
+            state["history"] = self.conversation_buffer.get_history()
+        if self.vector_store:
+            results = self.vector_store.similarity_search(text, top_k=1)
+            if results:
+                state["context"] = results[0]["text"]
+        result = self._graph.invoke(state)
+        if self.conversation_buffer and result.get("history"):
+            self.conversation_buffer.add(result["history"][-1])
+        return result
 
     @staticmethod
     def parse_action(response: str) -> tuple[str, Dict[str, Any]]:
