@@ -81,6 +81,15 @@ An orchestration framework is essential for connecting user input, the LLM, and 
   * **crewAI** uses a role-based paradigm that is intuitive for collaborative tasks.36  
   * **LangGraph**, part of the LangChain ecosystem, allows for building stateful, multi-agent applications as a graph, offering robust control over complex, cyclical workflows.40  
   * The initial architecture should be modular enough to incorporate these frameworks for future feature expansion without a complete redesign.
+### **Final Approved Technology Stack**
+
+| Layer | Choice | Notes |
+|-------|--------|-------|
+| **LLM Inference** | OpenAI gpt-4o for MVP; vLLM with Llama 3.1/Mistral for self-hosted deployments | Maintain OpenAI-compatible API for easy transition |
+| **Agent Framework** | LangChain with LangGraph for multi-agent flows | Provides explicit state management; AutoGen used only for experiments |
+| **Persistence** | SQLite for local dev; PostgreSQL with pgvector in production | Supports RAG indexing and scalability |
+| **Vector DB** | Qdrant or pgvector | Works with embedding pipeline |
+| **Deployment** | Render or Fly.io PaaS; Docker images for on-prem |
 
 ## **III. Core Architecture & Functional Modules**
 
