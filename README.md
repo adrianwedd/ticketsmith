@@ -7,6 +7,7 @@ See [Project Charter](PROJECT_CHARTER.md) for objectives, use cases, and success
 For a high-level architectural overview, see [Architecture Blueprint](docs/ARCHITECTURE_BLUEPRINT.md).
 See [Core Agent Loop](docs/CORE_AGENT_LOOP.md) for implementation details of the ReAct loop.
 See [LLM Model Selection](docs/LLM_MODEL_SELECTION.md) for the selected models and Confluence matrix.
+For details on Atlassian API usage and authentication, see [Atlassian Integration](docs/ATLASSIAN_INTEGRATION.md).
 
 ## Self-Hosted Inference Server
 
