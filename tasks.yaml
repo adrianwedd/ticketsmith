@@ -1,0 +1,18 @@
+# TICKETSMITH Tasks
+phases:
+  - phase: MVP
+    tasks:
+      - name: Jira integration (create/update issues via LLM)
+        status: todo
+      - name: LLM inference routing (OpenAI + fallback)
+        status: todo
+      - name: Human-in-the-loop interface
+        status: todo
+  - phase: Phase 2 - Confluence
+    tasks:
+      - name: Confluence page generation from issues
+        status: todo
+      - name: Cross-linked summaries
+        status: todo
+      - name: RAG integration using Jira + Confluence
+        status: todo
