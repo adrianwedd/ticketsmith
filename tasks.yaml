@@ -4,7 +4,7 @@
   component: "Project Management"
   dependencies:
   priority: 1
-  status: "pending"
+  status: "done"
   command: null
   task_id: "PROJ-PLAN-001"
   area: "Planning"
@@ -26,7 +26,7 @@
   dependencies:
     - 101
   priority: 1
-  status: "pending"
+  status: "done"
   command: null
   task_id: "PROJ-ARCH-001"
   area: "Architecture"
@@ -46,7 +46,7 @@
   component: "Project Management"
   dependencies:
   priority: 1
-  status: "pending"
+  status: "done"
   command: null
   task_id: "PROJ-SETUP-001"
   area: "Infrastructure"
@@ -183,7 +183,7 @@
   dependencies:
     - 102
   priority: 1
-  status: "pending"
+  status: "done"
   command: null
   task_id: "LLM-SETUP-001"
   area: "Architecture"
