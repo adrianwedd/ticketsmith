@@ -6,10 +6,14 @@ from .tools import tool
 from .atlassian_auth import get_confluence_client
 
 CREATE_DESC = (
-    "Create a Confluence page in the given space with the provided title and body."
+    "Create a Confluence page in the given space with the provided "
+    "title and body."  # noqa: E501
 )
 
-SEARCH_DESC = "Search Confluence using the siteSearch field to find relevant pages."
+SEARCH_DESC = (
+    "Search Confluence using the siteSearch field to find relevant "
+    "pages."  # noqa: E501
+)
 
 APPEND_DESC = "Append content to an existing Confluence page by ID."
 
