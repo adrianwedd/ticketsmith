@@ -4,6 +4,7 @@ import re
 from typing import Any, Callable, Dict
 
 from .memory import ConversationBuffer, SimpleVectorStore
+from .tools import ToolDispatcher
 
 from langgraph import graph
 
@@ -14,7 +15,7 @@ class CoreAgent:
     def __init__(
         self,
         llm: Callable[[str], str],
-        tools: Dict[str, Callable[..., Any]],
+        tools: ToolDispatcher,
         conversation_buffer: ConversationBuffer | None = None,
         vector_store: SimpleVectorStore | None = None,
     ) -> None:
@@ -22,7 +23,7 @@ class CoreAgent:
 
         Args:
             llm: Function that generates agent output from a prompt.
-            tools: Mapping of tool names to callables.
+            tools: Dispatcher used to execute tools by name.
             conversation_buffer: Optional buffer for short-term memory.
             vector_store: Optional long-term memory store.
         """
@@ -57,11 +58,9 @@ class CoreAgent:
     def _action_step(state: Dict[str, Any]) -> Dict[str, Any]:
         """Parse the action and execute the corresponding tool."""
         tool_name, kwargs = CoreAgent.parse_action(state["llm_output"])
-        tool = state["tools"].get(tool_name)
-        if tool is None:
-            raise ValueError(f"Unknown tool: {tool_name}")
+        dispatcher: ToolDispatcher = state["tools"]
         state["action"] = {"tool": tool_name, "args": kwargs}
-        state["observation"] = tool(**kwargs)
+        state["observation"] = dispatcher.dispatch(tool_name, **kwargs)
         return state
 
     @staticmethod
