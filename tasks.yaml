@@ -229,7 +229,7 @@
   dependencies:
     - 301
   priority: 3
-  status: "pending"
+  status: "done"
   command: "pip install llama-cpp-python"
   task_id: "LLM-DEV-001"
   area: "Development"
