@@ -1,5 +1,6 @@
 from ticketsmith.core_agent import CoreAgent
 from ticketsmith.memory import ConversationBuffer, SimpleVectorStore
+from ticketsmith.tools import ToolDispatcher, tool
 
 
 def test_conversation_buffer_window():
@@ -8,11 +9,12 @@ def test_conversation_buffer_window():
     def llm(_prompt: str) -> str:
         return "Thought: hi\nAction: echo_tool(message='x')"
 
+    @tool(name="echo_tool", description="Return the message.")
     def echo_tool(message: str) -> str:
         return message
 
-    tools = {"echo_tool": echo_tool}
-    agent = CoreAgent(llm, tools, conversation_buffer=buffer)
+    dispatcher = ToolDispatcher([echo_tool])
+    agent = CoreAgent(llm, dispatcher, conversation_buffer=buffer)
     agent.run("one")
     assert len(buffer.get_history()) == 1
     agent.run("two")
