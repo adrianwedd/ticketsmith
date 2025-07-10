@@ -24,3 +24,9 @@ docker compose up inference
 
 Requests must include `Authorization: Bearer <API key>` to access the
 `/v1/chat/completions` endpoint.
+
+### Local `llama-cpp-python` Inference
+
+Developers can run quantized models directly on their machines for quick
+experimentation. See [Local Inference with llama-cpp-python](docs/LOCAL_INFERENCE.md)
+for installation instructions and a sample script.
