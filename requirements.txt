@@ -1,2 +1,5 @@
 flask
 atlassian-python-api
+
+black
+flake8
