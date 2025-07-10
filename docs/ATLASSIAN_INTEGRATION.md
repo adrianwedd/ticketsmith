@@ -46,3 +46,21 @@ add_jira_comment(key, "Created via tool")
 assign_jira_user(key, account_id="12345")
 transition_jira_issue(key, "Done")
 ```
+
+## Confluence Tools
+
+The project also includes helper tools for Confluence. The search tool uses
+the `siteSearch` field to mimic the Confluence UI search.
+
+```python
+from ticketsmith.confluence_tools import (
+    create_confluence_page,
+    search_confluence,
+    append_to_confluence_page,
+)
+
+# create a page then search and append content
+page_id = create_confluence_page("DOC", "Example Page", "<p>Hello</p>")
+search_results = search_confluence("Example")
+append_to_confluence_page(page_id, "<p>More text</p>")
+```

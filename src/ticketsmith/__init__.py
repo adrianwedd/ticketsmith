@@ -8,6 +8,11 @@ from .jira_tools import (
     assign_jira_user,
     transition_jira_issue,
 )
+from .confluence_tools import (
+    create_confluence_page,
+    search_confluence,
+    append_to_confluence_page,
+)
 from .atlassian_auth import (
     AtlassianAuthError,
     get_confluence_client,
@@ -32,4 +37,7 @@ __all__ = [
     "add_jira_comment",
     "assign_jira_user",
     "transition_jira_issue",
+    "create_confluence_page",
+    "search_confluence",
+    "append_to_confluence_page",
 ]
