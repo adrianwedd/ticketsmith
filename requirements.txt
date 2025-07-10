@@ -3,3 +3,4 @@ atlassian-python-api
 
 black
 flake8
+langgraph==0.0.10
