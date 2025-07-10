@@ -70,7 +70,7 @@
     - 101
     - 102
   priority: 2
-  status: "pending"
+  status: "done"
   command: null
   task_id: "PROJ-ARCH-002"
   area: "Architecture"
