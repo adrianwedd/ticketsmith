@@ -13,6 +13,7 @@ from .confluence_tools import (
     search_confluence,
     append_to_confluence_page,
 )
+from .confluence_ingest import ConfluenceIngestor, extract_text, chunk_text
 from .linking_tools import create_linked_issue_and_page
 from .atlassian_auth import (
     AtlassianAuthError,
@@ -42,4 +43,7 @@ __all__ = [
     "search_confluence",
     "append_to_confluence_page",
     "create_linked_issue_and_page",
+    "ConfluenceIngestor",
+    "extract_text",
+    "chunk_text",
 ]
