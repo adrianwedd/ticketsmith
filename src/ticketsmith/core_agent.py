@@ -5,6 +5,8 @@ from typing import Any, Callable, Dict
 
 import structlog
 
+from .metrics import ERROR_COUNT, REQUEST_LATENCY
+
 from .memory import ConversationBuffer, SimpleVectorStore
 from .tools import ToolDispatcher
 
@@ -123,7 +125,12 @@ class CoreAgent:
             results = self.vector_store.similarity_search(text, top_k=1)
             if results:
                 state["context"] = results[0]["text"]
-        result = self._graph.invoke(state)
+        with REQUEST_LATENCY.time():
+            try:
+                result = self._graph.invoke(state)
+            except Exception:
+                ERROR_COUNT.inc()
+                raise
         if self.conversation_buffer and result.get("history"):
             self.conversation_buffer.add(result["history"][-1])
         logger.info("run_finish", result=result)

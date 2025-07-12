@@ -5,6 +5,8 @@ from typing import Dict, Iterable, List, Tuple
 
 import openai
 
+from .metrics import ERROR_COUNT, REQUEST_LATENCY, record_token_usage
+
 JUDGE_PROMPT = (
     "You are a strict judge for AI assistants. "
     "Score the candidate's answer on a scale of 1-5 for relevance, coherence, "
@@ -56,7 +58,16 @@ def score_answer(
             ),
         },
     ]
-    response = openai.ChatCompletion.create(model=model, messages=messages)
+    with REQUEST_LATENCY.time():
+        try:
+            response = openai.ChatCompletion.create(
+                model=model,
+                messages=messages,
+            )
+        except Exception:
+            ERROR_COUNT.inc()
+            raise
+    record_token_usage(response.get("usage", {}))
     content = response["choices"][0]["message"]["content"]
     return json.loads(content)
 
@@ -81,7 +92,16 @@ def score_rag_answer(
             ),
         },
     ]
-    response = openai.ChatCompletion.create(model=model, messages=messages)
+    with REQUEST_LATENCY.time():
+        try:
+            response = openai.ChatCompletion.create(
+                model=model,
+                messages=messages,
+            )
+        except Exception:
+            ERROR_COUNT.inc()
+            raise
+    record_token_usage(response.get("usage", {}))
     content = response["choices"][0]["message"]["content"]
     return json.loads(content)
 

@@ -735,7 +735,7 @@
   dependencies:
     - 801
   priority: 2
-  status: "pending"
+  status: "done"
   command: null
   task_id: "MONITOR-METRIC-001"
   area: "Monitoring"
