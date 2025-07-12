@@ -3,10 +3,14 @@ from __future__ import annotations
 import re
 from typing import Any, Callable, Dict
 
+import structlog
+
 from .memory import ConversationBuffer, SimpleVectorStore
 from .tools import ToolDispatcher
 
 from langgraph import graph
+
+logger = structlog.get_logger(__name__)
 
 SYSTEM_PROMPT = (
     "You are a helpful assistant. Only answer with information supported by "
@@ -58,6 +62,7 @@ class CoreAgent:
         prompt = CoreAgent._build_prompt(state)
         llm = state["llm"]
         state["llm_output"] = llm(prompt)
+        logger.info("thought", prompt=prompt, llm_output=state["llm_output"])
         return state
 
     @staticmethod
@@ -67,6 +72,12 @@ class CoreAgent:
         dispatcher: ToolDispatcher = state["tools"]
         state["action"] = {"tool": tool_name, "args": kwargs}
         state["observation"] = dispatcher.dispatch(tool_name, **kwargs)
+        logger.info(
+            "action",
+            tool=tool_name,
+            args=kwargs,
+            observation=state["observation"],
+        )
         return state
 
     @staticmethod
@@ -80,6 +91,7 @@ class CoreAgent:
                 "observation": state.get("observation"),
             }
         )
+        logger.info("observe", observation=state.get("observation"))
         return state
 
     @staticmethod
@@ -104,6 +116,7 @@ class CoreAgent:
             "tools": self.tools,
             "llm": self.llm,
         }
+        logger.info("run_start", input=text)
         if self.conversation_buffer:
             state["history"] = self.conversation_buffer.get_history()
         if self.vector_store:
@@ -113,6 +126,7 @@ class CoreAgent:
         result = self._graph.invoke(state)
         if self.conversation_buffer and result.get("history"):
             self.conversation_buffer.add(result["history"][-1])
+        logger.info("run_finish", result=result)
         return result
 
     @staticmethod
