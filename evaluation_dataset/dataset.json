@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "prompt": "I can't log in. Please open a bug ticket in project ABC.",
+    "expected_output": "Issue created via create_jira_issue with project_key=ABC and issue_type='Bug'.",
+    "context": "Jira project ABC."
+  },
+  {
+    "id": 2,
+    "prompt": "Summarize Confluence page 12345 for me.",
+    "expected_output": "Short summary of page 12345 content.",
+    "context": "Text of Confluence page 12345."
+  },
+  {
+    "id": 3,
+    "prompt": "Link issue ABC-1 with a new Confluence page titled 'Fix steps'.",
+    "expected_output": "Page created and ABC-1 commented with the link.",
+    "context": "Issue ABC-1 exists, Confluence space TS."
+  },
+  {
+    "id": 4,
+    "prompt": "Move ABC-2 to In Review.",
+    "expected_output": "Issue ABC-2 transitioned to In Review.",
+    "context": "ABC-2 has valid In Review transition."
+  }
+]
