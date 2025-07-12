@@ -30,6 +30,10 @@ Requests must include `Authorization: Bearer <API key>` to access the
 Benchmark results for tuning the vLLM server are available in
 [vLLM Benchmark Results](docs/VLLM_BENCHMARKS.md).
 
+For guidance on selecting a GPU-enabled hosting provider and configuring the
+production environment, see
+[Production Hosting Platform](docs/PRODUCTION_HOSTING.md).
+
 ### Local `llama-cpp-python` Inference
 
 Developers can run quantized models directly on their machines for quick

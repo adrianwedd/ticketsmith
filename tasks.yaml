@@ -508,7 +508,7 @@
     - 102
     - 302
   priority: 1
-  status: "pending"
+  status: "done"
   command: null
   task_id: "DEPLOY-003"
   area: "Infrastructure"
