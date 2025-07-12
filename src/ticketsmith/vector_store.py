@@ -58,7 +58,7 @@ class QdrantVectorStore:
         self._ensure_collection(len(vectors[0]))
         payloads = []
         for doc in docs_list:
-            payloads.append({k: v for k, v in doc.items() if k != "text"})
+            payloads.append(dict(doc))
         points = [
             rest.PointStruct(id=self._next_id + i, vector=vec, payload=pl)
             for i, (vec, pl) in enumerate(zip(vectors, payloads))
