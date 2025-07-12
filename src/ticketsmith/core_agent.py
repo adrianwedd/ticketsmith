@@ -9,6 +9,7 @@ from .metrics import ERROR_COUNT, REQUEST_LATENCY
 
 from .memory import ConversationBuffer, SimpleVectorStore
 from .tools import ToolDispatcher
+from .security import GuardrailModel, sanitize_input, parse_args
 
 from langgraph import graph
 
@@ -30,6 +31,7 @@ class CoreAgent:
         tools: ToolDispatcher,
         conversation_buffer: ConversationBuffer | None = None,
         vector_store: SimpleVectorStore | None = None,
+        guardrail: GuardrailModel | None = None,
     ) -> None:
         """Create a CoreAgent.
 
@@ -38,11 +40,13 @@ class CoreAgent:
             tools: Dispatcher used to execute tools by name.
             conversation_buffer: Optional buffer for short-term memory.
             vector_store: Optional long-term memory store.
+            guardrail: Optional guardrail model used to classify prompts.
         """
         self.llm = llm
         self.tools = tools
         self.conversation_buffer = conversation_buffer or ConversationBuffer()
         self.vector_store = vector_store
+        self.guardrail = guardrail or GuardrailModel()
         self._graph = self._build_graph()
 
     @staticmethod
@@ -113,16 +117,19 @@ class CoreAgent:
 
     def run(self, text: str) -> Dict[str, Any]:
         """Execute one Thought-Action-Observation loop."""
+        sanitized = sanitize_input(text)
+        if self.guardrail and not self.guardrail.check(sanitized):
+            raise ValueError("Input rejected by guardrail model")
         state: Dict[str, Any] = {
-            "input": text,
+            "input": sanitized,
             "tools": self.tools,
             "llm": self.llm,
         }
-        logger.info("run_start", input=text)
+        logger.info("run_start", input=sanitized)
         if self.conversation_buffer:
             state["history"] = self.conversation_buffer.get_history()
         if self.vector_store:
-            results = self.vector_store.similarity_search(text, top_k=1)
+            results = self.vector_store.similarity_search(sanitized, top_k=1)
             if results:
                 state["context"] = results[0]["text"]
         with REQUEST_LATENCY.time():
@@ -144,7 +151,5 @@ class CoreAgent:
             raise ValueError("Could not parse action")
         name = match.group(1)
         args_str = match.group(2).strip()
-        args = {}
-        if args_str:
-            args = eval(f"dict({args_str})", {"__builtins__": {"dict": dict}})
+        args = parse_args(args_str)
         return name, args

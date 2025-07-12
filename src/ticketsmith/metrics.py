@@ -102,4 +102,4 @@ def record_evaluation_scores(scores: Dict[str, float]) -> None:
         except ValueError:
             logger.warning(
                 "invalid_evaluation_score", metric=metric, value=value
-            )
+            )  # noqa: E501
