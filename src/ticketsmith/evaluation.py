@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from typing import Dict, Iterable, List, Tuple
 
-import openai
+from .cost_tracking import chat_completion_with_tracking
 
 from .metrics import ERROR_COUNT, REQUEST_LATENCY, record_token_usage
 
@@ -60,7 +60,7 @@ def score_answer(
     ]
     with REQUEST_LATENCY.time():
         try:
-            response = openai.ChatCompletion.create(
+            response = chat_completion_with_tracking(
                 model=model,
                 messages=messages,
             )
@@ -94,7 +94,7 @@ def score_rag_answer(
     ]
     with REQUEST_LATENCY.time():
         try:
-            response = openai.ChatCompletion.create(
+            response = chat_completion_with_tracking(
                 model=model,
                 messages=messages,
             )
