@@ -1,3 +1,5 @@
+"""Utilities for interacting with Confluence."""
+
 from __future__ import annotations
 
 from requests import RequestException

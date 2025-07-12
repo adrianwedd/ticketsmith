@@ -1,6 +1,6 @@
-from __future__ import annotations
+"""Prometheus metrics for TicketSmith."""
 
-"""Prometheus metrics for Ticketsmith."""
+from __future__ import annotations
 
 from typing import Any, Dict
 import os

@@ -1,0 +1,19 @@
+site_name: TicketSmith Documentation
+site_url: https://example.com
+repo_url: https://github.com/example/ticketsmith
+theme:
+  name: material
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          setup_commands:
+            - import sys; sys.path.append('src')
+nav:
+  - Home: index.md
+  - Architecture: ARCHITECTURE_BLUEPRINT.md
+  - Developer Guide:
+      - Core Agent Loop: CORE_AGENT_LOOP.md
+      - Atlassian Integration: ATLASSIAN_INTEGRATION.md
+      - RAG Architecture: RAG_ARCHITECTURE.md

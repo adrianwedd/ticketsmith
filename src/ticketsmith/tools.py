@@ -1,3 +1,5 @@
+"""Utility classes and decorators for tool execution."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass

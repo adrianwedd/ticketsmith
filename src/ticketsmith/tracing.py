@@ -1,3 +1,5 @@
+"""Configure OpenTelemetry tracing and instrumentation."""
+
 from __future__ import annotations
 
 from opentelemetry import trace

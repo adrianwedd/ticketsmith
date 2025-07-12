@@ -1,3 +1,5 @@
+"""TicketSmith package providing core agent and utilities."""
+
 from __future__ import annotations
 
 from .core_agent import CoreAgent

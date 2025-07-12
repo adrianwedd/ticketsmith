@@ -1,3 +1,5 @@
+"""Tools for automated evaluation of RAG responses."""
+
 from __future__ import annotations
 
 import json
