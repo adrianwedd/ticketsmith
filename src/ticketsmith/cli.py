@@ -8,6 +8,7 @@ from .metrics import start_metrics_server
 
 from .core_agent import CoreAgent
 from .tools import ToolDispatcher, tool
+from .security import GuardrailModel, sanitize_input
 
 
 @tool(name="echo_tool", description="Return the given message.")
@@ -28,9 +29,13 @@ def main(text: str) -> None:
     configure_logging()
     configure_tracing()
     start_metrics_server()
+    sanitized = sanitize_input(text)
+    guardrail = GuardrailModel()
+    if not guardrail.check(sanitized):
+        raise click.ClickException("Input rejected by guardrail model")
     dispatcher = ToolDispatcher([echo_tool])
-    agent = CoreAgent(dummy_llm, dispatcher)
-    result = agent.run(text)
+    agent = CoreAgent(dummy_llm, dispatcher, guardrail=guardrail)
+    result = agent.run(sanitized)
     click.echo(result)
 
 
