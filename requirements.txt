@@ -11,3 +11,4 @@ openai
 sentence-transformers
 pytest
 pytest-mock
+locust

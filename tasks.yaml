@@ -668,7 +668,7 @@
   dependencies:
     - 604
   priority: 3
-  status: "pending"
+  status: "done"
   command: null
   task_id: "QA-PERF-001"
   area: "Testing"
