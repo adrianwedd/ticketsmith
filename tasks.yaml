@@ -531,7 +531,7 @@
     - 602
     - 603
   priority: 3
-  status: "pending"
+  status: "done"
   command: null
   task_id: "DEPLOY-004"
   area: "DevOps"

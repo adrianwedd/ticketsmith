@@ -44,8 +44,18 @@ jobs:
       - name: Deploy to staging
         run: echo "Deploying ${{ github.sha }} to staging"
 
-  deploy-production:
+  deploy-canary:
     needs: deploy-staging
+    runs-on: ubuntu-latest
+    environment: canary
+    steps:
+      - name: Deploy canary release
+        run: echo "Rolling out canary for ${{ github.sha }}"
+      - name: Run smoke tests
+        run: echo "Running smoke tests against canary deployment"
+
+  deploy-production:
+    needs: deploy-canary
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
