@@ -6,6 +6,7 @@ import argparse
 import json
 
 from ticketsmith.evaluation import evaluate_from_files, evaluate_rag_from_files
+from ticketsmith.metrics import start_metrics_server
 
 
 def main() -> None:
@@ -28,6 +29,7 @@ def main() -> None:
         ),
     )
     args = parser.parse_args()
+    start_metrics_server()
 
     if args.rag:
         scores = evaluate_rag_from_files(

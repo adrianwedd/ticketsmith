@@ -18,7 +18,7 @@ from .confluence_tools import (
 from .confluence_ingest import ConfluenceIngestor, extract_text, chunk_text
 from .knowledge_base import knowledge_base_search, retrieve_relevant_chunks
 from .linking_tools import create_linked_issue_and_page
-from .metrics import start_metrics_server
+from .metrics import start_metrics_server, record_evaluation_scores
 from .cost_tracking import chat_completion_with_tracking
 from .atlassian_auth import (
     AtlassianAuthError,
@@ -54,5 +54,6 @@ __all__ = [
     "knowledge_base_search",
     "retrieve_relevant_chunks",
     "start_metrics_server",
+    "record_evaluation_scores",
     "chat_completion_with_tracking",
 ]
