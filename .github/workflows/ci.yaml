@@ -16,7 +16,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install qdrant-client atlassian-python-api black flake8 pydantic langgraph==0.0.10 flask
+          pip install -r requirements.txt pytest pytest-mock
       - name: Lint
         run: |
           black --check .

@@ -6,36 +6,31 @@ class DummyTools:
         self.calls = []
 
 
-def test_create_linked(monkeypatch):
-    def fake_create_jira_issue(**kwargs):
-        dummy.calls.append(("create_issue", kwargs))
-        return "TST-1"
-
-    def fake_create_confluence_page(space, title, body):
-        dummy.calls.append(("create_page", space, title, body))
-        return "42"
-
-    def fake_add_jira_comment(issue_key, comment):
-        dummy.calls.append(("comment", issue_key, comment))
-        return "ok"
-
+def test_create_linked(mocker):
     dummy = DummyTools()
-    monkeypatch.setattr(
-        linking_tools,
-        "create_jira_issue",
-        fake_create_jira_issue,
+
+    mocker.patch(
+        "ticketsmith.linking_tools.create_jira_issue",
+        side_effect=lambda **kwargs: (
+            dummy.calls.append(("create_issue", kwargs)) or "TST-1"
+        ),
     )
-    monkeypatch.setattr(
-        linking_tools,
-        "create_confluence_page",
-        fake_create_confluence_page,
+    mocker.patch(
+        "ticketsmith.linking_tools.create_confluence_page",
+        side_effect=lambda space, title, body: (
+            dummy.calls.append(("create_page", space, title, body)) or "42"
+        ),
     )
-    monkeypatch.setattr(
-        linking_tools,
-        "add_jira_comment",
-        fake_add_jira_comment,
+    mocker.patch(
+        "ticketsmith.linking_tools.add_jira_comment",
+        side_effect=lambda issue_key, comment: (
+            dummy.calls.append(("comment", issue_key, comment)) or "ok"
+        ),
     )
-    monkeypatch.setenv("ATLASSIAN_BASE_URL", "https://example.atlassian.net")
+    mocker.patch.dict(
+        "os.environ",
+        {"ATLASSIAN_BASE_URL": "https://example.atlassian.net"},
+    )
 
     result = linking_tools.create_linked_issue_and_page(
         project_key="TST",
