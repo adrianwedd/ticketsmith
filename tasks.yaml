@@ -923,7 +923,7 @@
     - 201
     - 903
   priority: 2
-  status: "pending"
+  status: "done"
   command: null
   task_id: "SEC-HITL-001"
   area: "Development"

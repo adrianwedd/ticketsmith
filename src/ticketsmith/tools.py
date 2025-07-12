@@ -78,10 +78,14 @@ class ToolDispatcher:
         self,
         tools: Iterable[Tool],
         token: str | None = None,
+        approval_client: Any | None = None,
+        high_risk_tools: Iterable[str] | None = None,
     ) -> None:
         self._tools: Dict[str, Tool] = {t.name: t for t in tools}
         self._token = token or os.getenv("TOOL_ACCESS_TOKEN")
         self._token_scopes = load_token_scopes()
+        self._approval_client = approval_client
+        self._high_risk = set(high_risk_tools or [])
 
     def dispatch(
         self,
@@ -96,6 +100,10 @@ class ToolDispatcher:
         if not access_token:
             raise InvalidTokenError("401 Unauthorized: missing token")
         validate_token(access_token, tool.scope, self._token_scopes)
+        if name in self._high_risk and self._approval_client:
+            approved = self._approval_client.request_approval(name, kwargs)
+            if not approved:
+                raise PermissionError(f"Action {name} was not approved")
         with tracer.start_as_current_span(
             "tool_execution",
             attributes={"tool": name},
