@@ -765,9 +765,9 @@
   actionable_steps:
     - "Deploy a Grafana instance."
     - "Configure data sources in Grafana to connect to Prometheus, the log aggregator, and the tracing backend."
+    - "Use Grafana dashboards to display metrics, logs, and traces with alerting rules."
     - "Create a main 'System Health' dashboard that displays key performance indicators (KPIs) like overall latency, error rate, and throughput."
     - "Create detailed dashboards for each service, showing service-specific metrics."
-    - "Set up alerts in Grafana to notify the on-call team of any metric that breaches its predefined threshold."
   acceptance_criteria:
     - "A set of Grafana dashboards provides a comprehensive, real-time view of the system's health."
     - "Dashboards allow for correlation between metrics, logs, and traces."
