@@ -4,7 +4,10 @@ from dataclasses import dataclass
 from typing import Any, Callable, Dict, Iterable
 import inspect
 
+from opentelemetry import trace
 from pydantic import BaseModel, ValidationError, create_model
+
+tracer = trace.get_tracer(__name__)
 
 
 @dataclass
@@ -61,7 +64,12 @@ class ToolDispatcher:
     def dispatch(self, name: str, **kwargs: Any) -> Any:
         if name not in self._tools:
             raise ValueError(f"Unknown tool: {name}")
-        return self._tools[name](**kwargs)
+        tool = self._tools[name]
+        with tracer.start_as_current_span(
+            "tool_execution",
+            attributes={"tool": name},
+        ):
+            return tool(**kwargs)
 
     def get(self, name: str) -> Tool | None:
         return self._tools.get(name)

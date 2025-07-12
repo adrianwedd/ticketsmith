@@ -4,6 +4,10 @@ import re
 from dataclasses import dataclass
 from typing import Callable, List
 
+from opentelemetry import trace
+
+tracer = trace.get_tracer(__name__)
+
 
 @dataclass
 class PlanResult:
@@ -33,7 +37,8 @@ class StepPlanner:
             "Break down the following task into a numbered list of steps.\n"
             f"Task: {task}\nSteps:"
         )
-        response = self.llm(prompt)
+        with tracer.start_as_current_span("planning"):
+            response = self.llm(prompt)
         return self._parse_steps(response)
 
     def execute(
@@ -42,7 +47,11 @@ class StepPlanner:
         """Execute each step with the provided executor function."""
         results: List[PlanResult] = []
         for step in steps:
-            result = executor(step)
+            with tracer.start_as_current_span(
+                "tool_call",
+                attributes={"step": step},
+            ):
+                result = executor(step)
             results.append(PlanResult(step=step, result=result))
         return results
 
