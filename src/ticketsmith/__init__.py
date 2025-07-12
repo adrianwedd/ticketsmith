@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from .core_agent import CoreAgent
 from .memory import ConversationBuffer, SimpleVectorStore
 from .planning import StepPlanner, PlanResult
@@ -14,6 +16,7 @@ from .confluence_tools import (
     append_to_confluence_page,
 )
 from .confluence_ingest import ConfluenceIngestor, extract_text, chunk_text
+from .knowledge_base import knowledge_base_search, retrieve_relevant_chunks
 from .linking_tools import create_linked_issue_and_page
 from .atlassian_auth import (
     AtlassianAuthError,
@@ -46,4 +49,6 @@ __all__ = [
     "ConfluenceIngestor",
     "extract_text",
     "chunk_text",
+    "knowledge_base_search",
+    "retrieve_relevant_chunks",
 ]
