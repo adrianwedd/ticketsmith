@@ -852,7 +852,7 @@
   dependencies:
     - 201
   priority: 1
-  status: "pending"
+  status: "done"
   command: null
   task_id: "SEC-PII-001"
   area: "Security"

@@ -3,6 +3,8 @@ import logging
 import structlog
 from opentelemetry.trace import get_current_span
 
+from .security import redact_pii
+
 
 def add_trace_ids(_, __, event_dict):
     span = get_current_span()
@@ -14,6 +16,10 @@ def add_trace_ids(_, __, event_dict):
     return event_dict
 
 
+def _redact_processor(_, __, event_dict):
+    return {k: redact_pii(v) for k, v in event_dict.items()}
+
+
 def configure_logging() -> None:
     """Configure structlog for JSON output with trace IDs."""
     logging.basicConfig(level=logging.INFO)
@@ -21,6 +27,7 @@ def configure_logging() -> None:
         processors=[
             structlog.processors.TimeStamper(fmt="iso"),
             add_trace_ids,
+            _redact_processor,
             structlog.processors.JSONRenderer(),
         ],
         wrapper_class=structlog.make_filtering_bound_logger(logging.INFO),
