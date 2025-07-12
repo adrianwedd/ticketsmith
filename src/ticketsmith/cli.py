@@ -3,6 +3,7 @@ from __future__ import annotations
 import click
 
 from .logging_config import configure_logging
+from .tracing import configure_tracing
 
 from .core_agent import CoreAgent
 from .tools import ToolDispatcher, tool
@@ -24,6 +25,7 @@ def dummy_llm(prompt: str) -> str:
 def main(text: str) -> None:
     """Run the core agent once with the provided text."""
     configure_logging()
+    configure_tracing()
     dispatcher = ToolDispatcher([echo_tool])
     agent = CoreAgent(dummy_llm, dispatcher)
     result = agent.run(text)
