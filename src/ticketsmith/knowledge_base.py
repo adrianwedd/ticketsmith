@@ -1,3 +1,5 @@
+"""Simple question-answering knowledge base utilities."""
+
 from __future__ import annotations
 
 from typing import Any, Dict, List

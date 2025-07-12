@@ -1,3 +1,5 @@
+"""Authentication helpers for Atlassian APIs."""
+
 from __future__ import annotations
 
 import os

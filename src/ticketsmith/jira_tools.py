@@ -1,3 +1,5 @@
+"""Helper functions for interacting with Jira."""
+
 from __future__ import annotations
 
 from requests import RequestException

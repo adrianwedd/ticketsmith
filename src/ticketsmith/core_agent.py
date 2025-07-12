@@ -1,3 +1,5 @@
+"""Core ReAct agent implementation."""
+
 from __future__ import annotations
 
 import re

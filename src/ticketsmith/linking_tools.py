@@ -1,3 +1,5 @@
+"""Link Jira issues with Confluence pages."""
+
 from __future__ import annotations
 
 import os

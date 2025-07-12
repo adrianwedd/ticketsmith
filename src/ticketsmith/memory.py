@@ -1,3 +1,5 @@
+"""In-memory conversation buffer and embedding store."""
+
 from __future__ import annotations
 
 import json

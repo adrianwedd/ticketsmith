@@ -1,6 +1,6 @@
-from __future__ import annotations
-
 """Wrapper functions for LLM API calls with cost tracking."""
+
+from __future__ import annotations
 
 from typing import Any, Dict, List
 

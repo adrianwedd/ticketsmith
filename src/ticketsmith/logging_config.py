@@ -1,3 +1,5 @@
+"""Logging helpers with trace context."""
+
 import logging
 
 import structlog

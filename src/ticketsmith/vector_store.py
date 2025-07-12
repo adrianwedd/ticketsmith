@@ -1,3 +1,5 @@
+"""Interface to Qdrant vector store."""
+
 from __future__ import annotations
 
 from typing import Any, Callable, Dict, Iterable, List, Optional
