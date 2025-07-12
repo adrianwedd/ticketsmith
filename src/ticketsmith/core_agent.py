@@ -8,6 +8,12 @@ from .tools import ToolDispatcher
 
 from langgraph import graph
 
+SYSTEM_PROMPT = (
+    "You are a helpful assistant. Only answer with information supported by "
+    "the provided context. If the context does not contain the answer, "
+    "respond with 'I don't know based on the provided context.'"
+)
+
 
 class CoreAgent:
     """Simple ReAct agent using a LangGraph state machine."""
@@ -79,7 +85,7 @@ class CoreAgent:
     @staticmethod
     def _build_prompt(state: Dict[str, Any]) -> str:
         """Build the prompt for the LLM."""
-        prompt = ""
+        prompt = f"{SYSTEM_PROMPT}\n"
         if "context" in state:
             prompt += f"Context: {state['context']}\n"
         for step in state.get("history", []):
