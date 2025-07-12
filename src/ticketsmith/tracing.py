@@ -14,7 +14,7 @@ from opentelemetry.exporter.otlp.proto.http.trace_exporter import (
 def configure_tracing(service_name: str = "ticketsmith") -> None:
     """Configure OpenTelemetry tracing and instrument common libraries."""
     provider = TracerProvider(
-        resource=Resource.create({"service.name": service_name})
+        resource=Resource.create({"service.name": service_name}),
     )
     processor = BatchSpanProcessor(OTLPSpanExporter())
     provider.add_span_processor(processor)
