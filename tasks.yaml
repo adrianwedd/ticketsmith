@@ -645,7 +645,7 @@
     - 504
     - 703
   priority: 2
-  status: "pending"
+  status: "done"
   command: null
   task_id: "QA-EVAL-003"
   area: "Testing"
