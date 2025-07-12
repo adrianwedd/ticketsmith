@@ -758,7 +758,7 @@
     - 802
     - 803
   priority: 3
-  status: "pending"
+  status: "done"
   command: null
   task_id: "MONITOR-DASH-001"
   area: "Monitoring"
@@ -781,7 +781,7 @@
   dependencies:
     - 301
   priority: 2
-  status: "pending"
+  status: "done"
   command: null
   task_id: "MONITOR-COST-001"
   area: "Monitoring"
