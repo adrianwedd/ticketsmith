@@ -622,18 +622,18 @@
   dependencies:
     - 703
   priority: 2
-  status: "pending"
+  status: "done"
   command: null
   task_id: "QA-EVAL-002"
   area: "Testing"
   actionable_steps:
-    - "In the system prompt for the generation step, explicitly instruct the model to only use the provided context and to state when it does not have enough information to answer."
+    - "Update the agent's system prompt to instruct the model to avoid unsupported claims and to state when context is insufficient."
+    - "Evaluate each final answer against the retrieved context to ensure every statement is grounded."
     - "Use an LLM-as-a-judge evaluator (from Task 703) specifically for 'Groundedness' or 'Factual Consistency'."
-    - "The judge's prompt for this task will take the user's query, the retrieved context, and the agent's final answer, and ask: 'Is every statement in the answer supported by the provided context? Answer yes or no, and explain why.'"
     - "Run these checks as part of the main evaluation suite."
   acceptance_criteria:
     - "A specific test for factual consistency is implemented and integrated into the CI/CD pipeline."
-    - "The agent's system prompt is updated to discourage hallucination."
+    - "The system prompt discourages unsupported claims and instructs the model to answer only with grounded information."
     - "The project has a quantifiable metric for the hallucination rate, which is tracked over time."
   assigned_to: "QALead"
   epic: "Testing, Evaluation, and Quality Assurance"
