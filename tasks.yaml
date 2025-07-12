@@ -875,7 +875,7 @@
   dependencies:
     - 101
   priority: 1
-  status: "pending"
+  status: "done"
   command: null
   task_id: "SEC-COMPLIANCE-001"
   area: "Compliance"
@@ -1058,3 +1058,260 @@
     - "A documented process for managing and updating prompts is in place."
   assigned_to: "LeadArchitect"
   epic: "Documentation and Handoff"
+- id: 1005
+  title: "Establish Business Associate Agreement Process"
+  description: "Create and manage a formal BAA process to meet HIPAA requirements when working with partners and vendors."
+  component: "Compliance"
+  dependencies:
+    - 903
+  priority: 1
+  status: "pending"
+  command: null
+  task_id: "SEC-BAA-001"
+  area: "Compliance"
+  actionable_steps:
+    - "Draft a standard BAA template with legal counsel."
+    - "Identify all partners that require BAAs."
+    - "Implement a workflow for negotiating, executing, and storing BAAs."
+  acceptance_criteria:
+    - "Approved BAA template exists."
+    - "Executed BAAs are on file for all applicable vendors."
+    - "BAA management process is documented in Confluence."
+- id: 1006
+  title: "Implement Data Encryption at Rest"
+  description: "Ensure all sensitive data is encrypted at rest across databases and storage services."
+  component: "Security"
+  dependencies:
+    - 801
+  priority: 1
+  status: "pending"
+  command: null
+  task_id: "SEC-ENC-001"
+  area: "Compliance"
+  actionable_steps:
+    - "Select encryption mechanisms supported by the infrastructure."
+    - "Enable encryption at rest for databases and file storage."
+    - "Document key management procedures."
+  acceptance_criteria:
+    - "All data stores confirm encryption at rest."
+    - "Encryption and key management procedures are documented."
+- id: 1007
+  title: "Implement Detailed Audit Logging"
+  description: "Add audit logging for security-relevant events to satisfy compliance frameworks."
+  component: "Security"
+  dependencies:
+    - 801
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "SEC-AUDIT-001"
+  area: "Compliance"
+  actionable_steps:
+    - "Define security events that must be logged (e.g., login, data access, permission changes)."
+    - "Augment the logging system to record these events with necessary context."
+    - "Ensure logs are immutable and retained according to policy."
+  acceptance_criteria:
+    - "Security events generate audit logs with user and timestamp information."
+    - "Audit logs are retained and protected from tampering."
+- id: 1008
+  title: "Implement Role-Based Access Controls and Training"
+  description: "Define RBAC roles and provide training to ensure least-privilege access across the system."
+  component: "Security"
+  dependencies:
+    - 904
+    - 906
+  priority: 1
+  status: "pending"
+  command: null
+  task_id: "SEC-RBAC-001"
+  area: "Compliance"
+  actionable_steps:
+    - "Define user and service roles with specific permissions."
+    - "Configure the system to enforce these roles."
+    - "Provide mandatory training on RBAC policies for all users."
+  acceptance_criteria:
+    - "Roles and permissions are documented."
+    - "System enforces RBAC for all operations."
+    - "Training completion records are maintained."
+- id: 1009
+  title: "Develop Formal ISMS Documentation and Risk Assessments"
+  description: "Produce ISO 27001 compliant ISMS documentation and perform formal risk assessments."
+  component: "Compliance"
+  dependencies:
+    - 906
+  priority: 1
+  status: "pending"
+  command: null
+  task_id: "SEC-ISMS-001"
+  area: "Compliance"
+  actionable_steps:
+    - "Create an ISMS policy manual covering scope, leadership, and objectives."
+    - "Conduct an initial risk assessment and produce a treatment plan."
+    - "Store ISMS documentation in Confluence for audit reference."
+  acceptance_criteria:
+    - "ISMS manual is approved and published."
+    - "Risk assessment and treatment plan are completed."
+    - "Documentation is available for auditors."
+- id: 1010
+  title: "Establish Internal Audit and Continuous Improvement Program"
+  description: "Set up a recurring internal audit schedule and management review process for ISO 27001."
+  component: "Compliance"
+  dependencies:
+    - 1009
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "SEC-AUDIT-INT-001"
+  area: "Compliance"
+  actionable_steps:
+    - "Define internal audit procedures and schedule."
+    - "Assign audit responsibilities and train auditors."
+    - "Hold management review meetings to track improvements."
+  acceptance_criteria:
+    - "Internal audits occur according to schedule."
+    - "Findings are documented and addressed."
+    - "Management reviews demonstrate continuous improvement."
+- id: 1011
+  title: "Implement NIST 800-53 Controls for FISMA Compliance"
+  description: "Map system controls to NIST 800-53 and implement missing safeguards required by FISMA."
+  component: "Compliance"
+  dependencies:
+    - 903
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "SEC-FISMA-001"
+  area: "Compliance"
+  actionable_steps:
+    - "Perform a control gap analysis against NIST 800-53."
+    - "Create implementation tasks for missing controls."
+    - "Track control status in a compliance matrix."
+  acceptance_criteria:
+    - "NIST 800-53 control mapping is complete."
+    - "Missing controls have remediation tasks assigned."
+- id: 1012
+  title: "Establish Continuous Monitoring and ATO Procedures"
+  description: "Define continuous monitoring and Authority to Operate (ATO) processes as required for FISMA."
+  component: "Compliance"
+  dependencies:
+    - 1011
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "SEC-FISMA-ATO-001"
+  area: "Compliance"
+  actionable_steps:
+    - "Document continuous monitoring requirements."
+    - "Set up dashboards and alerts for compliance controls."
+    - "Outline steps to obtain and maintain an ATO."
+  acceptance_criteria:
+    - "Continuous monitoring dashboards are operational."
+    - "ATO process documentation is published."
+- id: 1013
+  title: "Perform System Categorization and Impact Analysis"
+  description: "Determine system impact level and categorize information types for FISMA compliance."
+  component: "Compliance"
+  dependencies:
+    - 903
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "SEC-FISMA-CAT-001"
+  area: "Compliance"
+  actionable_steps:
+    - "Identify all information types processed by the system."
+    - "Determine confidentiality, integrity, and availability impact levels."
+    - "Document categorization results in the compliance repository."
+  acceptance_criteria:
+    - "System categorization report is completed."
+    - "Impact levels are approved by stakeholders."
+- id: 1014
+  title: "Create Change, Vendor, and Business Continuity Policies"
+  description: "Draft policies covering change management, vendor management, and business continuity for SOC 2 readiness."
+  component: "Compliance"
+  dependencies:
+    - 906
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "SEC-SOC2-POL-001"
+  area: "Compliance"
+  actionable_steps:
+    - "Develop change management policy with approval workflow."
+    - "Establish vendor due diligence and monitoring procedures."
+    - "Create a business continuity and disaster recovery plan."
+  acceptance_criteria:
+    - "Policies are published and approved by leadership."
+    - "Vendor reviews and continuity planning are documented."
+- id: 1015
+  title: "Schedule Independent SOC 2 Type II Audit"
+  description: "Engage an accredited auditor to perform a SOC 2 Type II examination."
+  component: "Compliance"
+  dependencies:
+    - 1014
+  priority: 3
+  status: "pending"
+  command: null
+  task_id: "SEC-SOC2-AUDIT-001"
+  area: "Compliance"
+  actionable_steps:
+    - "Select an auditing firm and scope the engagement."
+    - "Gather evidence of control implementation."
+    - "Schedule fieldwork and prepare for auditor interviews."
+  acceptance_criteria:
+    - "SOC 2 audit engagement letter is executed."
+    - "Audit is completed and report delivered."
+- id: 1016
+  title: "Provide GDPR Data Processing Agreement Templates"
+  description: "Create DPA templates and guidance for engagements involving EU personal data."
+  component: "Compliance"
+  dependencies:
+    - 903
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "SEC-GDPR-DPA-001"
+  area: "Compliance"
+  actionable_steps:
+    - "Draft a standard DPA aligned with GDPR requirements."
+    - "Publish instructions for executing DPAs with customers and vendors."
+  acceptance_criteria:
+    - "DPA template is approved by legal and available."
+    - "Guidance for DPAs is accessible to the sales team."
+- id: 1017
+  title: "Implement Data Deletion and Export Request Handling"
+  description: "Build processes to support GDPR rights to erasure and data portability."
+  component: "Compliance"
+  dependencies:
+    - 1016
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "SEC-GDPR-RTBF-001"
+  area: "Compliance"
+  actionable_steps:
+    - "Define workflow for users to request data deletion or export."
+    - "Implement scripts or tools to locate and remove user data."
+    - "Log all requests and actions taken for auditability."
+  acceptance_criteria:
+    - "User requests can be processed within required timeframes."
+    - "Deletion and export actions are logged."
+- id: 1018
+  title: "Maintain Record of Processing Activities and Conduct DPIAs"
+  description: "Track processing activities and perform Data Protection Impact Assessments for high-risk features."
+  component: "Compliance"
+  dependencies:
+    - 1016
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "SEC-GDPR-DPIA-001"
+  area: "Compliance"
+  actionable_steps:
+    - "Create a central register of data processing activities."
+    - "Perform DPIAs when introducing new high-risk processing."
+    - "Review and update the register regularly."
+  acceptance_criteria:
+    - "Processing register is complete and kept current."
+    - "DPIAs are available for auditor review."
+
