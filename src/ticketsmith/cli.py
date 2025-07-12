@@ -11,7 +11,11 @@ from .tools import ToolDispatcher, tool
 from .security import GuardrailModel, sanitize_input
 
 
-@tool(name="echo_tool", description="Return the given message.")
+@tool(
+    name="echo_tool",
+    description="Return the given message.",
+    scope="misc:echo",
+)
 def echo_tool(message: str) -> str:
     """Return the given message."""
     return message
