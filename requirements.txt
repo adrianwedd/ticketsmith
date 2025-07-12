@@ -20,3 +20,4 @@ opentelemetry-instrumentation-flask
 opentelemetry-instrumentation-requests
 prometheus-client
 scrubadub
+slack_sdk

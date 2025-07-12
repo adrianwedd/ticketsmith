@@ -4,6 +4,7 @@ from .core_agent import CoreAgent
 from .memory import ConversationBuffer, SimpleVectorStore
 from .planning import StepPlanner, PlanResult
 from .tools import Tool, ToolDispatcher, tool
+from .hitl import SlackApprovalClient
 from .jira_tools import (
     create_jira_issue,
     add_jira_comment,
@@ -36,6 +37,7 @@ __all__ = [
     "Tool",
     "ToolDispatcher",
     "tool",
+    "SlackApprovalClient",
     "AtlassianAuthError",
     "get_jira_client",
     "get_confluence_client",
