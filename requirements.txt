@@ -7,6 +7,7 @@ langgraph==0.0.10
 pydantic
 llama-cpp-python
 qdrant-client
+openai
 sentence-transformers
 pytest
 pytest-mock
