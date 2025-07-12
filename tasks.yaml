@@ -483,12 +483,12 @@
     - 601
     - 701
   priority: 2
-  status: "pending"
+  status: "done"
   command: null
   task_id: "DEPLOY-002"
   area: "DevOps"
   actionable_steps:
-    - "Choose a CI/CD platform (e.g., GitHub Actions, Jenkins)."
+    - "Use **GitHub Actions** as the CI/CD platform."
     - "Configure the CI pipeline to: check out the code, build the Docker images, run the unit and integration test suite (from Epic 7)."
     - "Configure the CD pipeline to: push the built Docker images to a container registry upon a successful CI run."
     - "Implement deployment steps to pull the new images and deploy them to the staging environment for further testing."
