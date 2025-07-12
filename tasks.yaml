@@ -945,7 +945,7 @@
   dependencies:
     - 903
   priority: 1
-  status: "pending"
+  status: "done"
   command: null
   task_id: "SEC-POLICY-001"
   area: "Compliance"
