@@ -41,3 +41,7 @@ For scaling policies, blue-green deployments, and backup procedures, see
 Developers can run quantized models directly on their machines for quick
 experimentation. See [Local Inference with llama-cpp-python](docs/LOCAL_INFERENCE.md)
 for installation instructions and a sample script.
+
+## Evaluation Dataset
+
+A curated evaluation dataset lives in the [`evaluation_dataset`](evaluation_dataset/) directory. Each entry defines a user prompt, the expected output, and the context the agent should reference. Update the dataset and commit changes whenever new examples are added so automated evaluations remain reproducible.
