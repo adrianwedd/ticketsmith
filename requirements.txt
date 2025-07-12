@@ -8,3 +8,5 @@ pydantic
 llama-cpp-python
 qdrant-client
 sentence-transformers
+pytest
+pytest-mock
