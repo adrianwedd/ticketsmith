@@ -33,6 +33,8 @@ Benchmark results for tuning the vLLM server are available in
 For guidance on selecting a GPU-enabled hosting provider and configuring the
 production environment, see
 [Production Hosting Platform](docs/PRODUCTION_HOSTING.md).
+For scaling policies, blue-green deployments, and backup procedures, see
+[Production Deployment and Scaling Strategy](docs/PRODUCTION_DEPLOYMENT.md).
 
 ### Local `llama-cpp-python` Inference
 
