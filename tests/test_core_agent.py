@@ -6,7 +6,11 @@ def test_single_loop():
     def llm(_prompt: str) -> str:
         return "Thought: say hello\nAction: echo_tool(message='hi')"
 
-    @tool(name="echo_tool", description="Return the given message.")
+    @tool(
+        name="echo_tool",
+        description="Return the given message.",
+        scope="misc:echo",
+    )
     def echo_tool(message: str) -> str:
         return message
 

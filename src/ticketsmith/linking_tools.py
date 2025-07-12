@@ -15,7 +15,11 @@ LINK_DESC = (
 )
 
 
-@tool(name="create_linked_issue_and_page", description=LINK_DESC)
+@tool(
+    name="create_linked_issue_and_page",
+    description=LINK_DESC,
+    scope="link:create",
+)
 def create_linked_issue_and_page(
     project_key: str,
     summary: str,

@@ -3,9 +3,16 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, Iterable
 import inspect
+import os
 
 from opentelemetry import trace
 from pydantic import BaseModel, ValidationError, create_model
+
+from .token_auth import (
+    validate_token,
+    load_token_scopes,
+    InvalidTokenError,
+)
 
 tracer = trace.get_tracer(__name__)
 
@@ -18,6 +25,7 @@ class Tool:
     description: str
     schema: type[BaseModel]
     func: Callable[..., Any]
+    scope: str
 
     def __call__(self, **kwargs: Any) -> Any:
         """Validate arguments and execute the underlying function."""
@@ -30,8 +38,10 @@ class Tool:
         return self.func(**data.model_dump())
 
 
-def tool(name: str, description: str) -> Callable[[Callable[..., Any]], Tool]:
-    """Decorator to convert a function into a :class:`Tool`."""
+def tool(
+    name: str, description: str, scope: str
+) -> Callable[[Callable[..., Any]], Tool]:
+    """Decorator to convert a function into a :class:`Tool` with a scope."""
 
     def decorator(fn: Callable[..., Any]) -> Tool:
         parameters: Dict[str, tuple[Any, Any]] = {}
@@ -50,21 +60,42 @@ def tool(name: str, description: str) -> Callable[[Callable[..., Any]], Tool]:
             parameters[param.name] = (annotation, default)
         # fmt: on
         schema = create_model(f"{fn.__name__.title()}Args", **parameters)
-        return Tool(name=name, description=description, schema=schema, func=fn)
+        return Tool(
+            name=name,
+            description=description,
+            schema=schema,
+            func=fn,
+            scope=scope,
+        )
 
     return decorator
 
 
 class ToolDispatcher:
-    """Execute tools by name with argument validation."""
+    """Execute tools by name with argument validation and token checks."""
 
-    def __init__(self, tools: Iterable[Tool]) -> None:
+    def __init__(
+        self,
+        tools: Iterable[Tool],
+        token: str | None = None,
+    ) -> None:
         self._tools: Dict[str, Tool] = {t.name: t for t in tools}
+        self._token = token or os.getenv("TOOL_ACCESS_TOKEN")
+        self._token_scopes = load_token_scopes()
 
-    def dispatch(self, name: str, **kwargs: Any) -> Any:
+    def dispatch(
+        self,
+        name: str,
+        token: str | None = None,
+        **kwargs: Any,
+    ) -> Any:
         if name not in self._tools:
             raise ValueError(f"Unknown tool: {name}")
         tool = self._tools[name]
+        access_token = token or self._token
+        if not access_token:
+            raise InvalidTokenError("401 Unauthorized: missing token")
+        validate_token(access_token, tool.scope, self._token_scopes)
         with tracer.start_as_current_span(
             "tool_execution",
             attributes={"tool": name},

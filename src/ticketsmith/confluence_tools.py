@@ -22,7 +22,11 @@ SEARCH_DESC = (
 APPEND_DESC = "Append content to an existing Confluence page by ID."
 
 
-@tool(name="create_confluence_page", description=CREATE_DESC)
+@tool(
+    name="create_confluence_page",
+    description=CREATE_DESC,
+    scope="confluence:page:create",
+)
 def create_confluence_page(space: str, title: str, body: str) -> str:
     """Create a Confluence page.
 
@@ -44,7 +48,11 @@ def create_confluence_page(space: str, title: str, body: str) -> str:
         raise RuntimeError(f"Failed to create page: {exc}") from exc
 
 
-@tool(name="search_confluence", description=SEARCH_DESC)
+@tool(
+    name="search_confluence",
+    description=SEARCH_DESC,
+    scope="confluence:page:read",
+)
 def search_confluence(query: str) -> dict:
     """Search Confluence pages.
 
@@ -64,7 +72,11 @@ def search_confluence(query: str) -> dict:
         raise RuntimeError(f"Failed to search Confluence: {exc}") from exc
 
 
-@tool(name="append_to_confluence_page", description=APPEND_DESC)
+@tool(
+    name="append_to_confluence_page",
+    description=APPEND_DESC,
+    scope="confluence:page:update",
+)
 def append_to_confluence_page(page_id: str, content: str) -> str:
     """Append content to a Confluence page.
 

@@ -898,7 +898,7 @@
     - 204
     - 903
   priority: 2
-  status: "pending"
+  status: "done"
   command: null
   task_id: "SEC-OAUTH-001"
   area: "Security"

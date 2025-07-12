@@ -2,7 +2,7 @@ from ticketsmith.tools import ToolDispatcher, tool
 import pytest
 
 
-@tool(name="add", description="Add two integers together.")
+@tool(name="add", description="Add two integers together.", scope="math:add")
 def add(a: int, b: int) -> int:
     return a + b
 

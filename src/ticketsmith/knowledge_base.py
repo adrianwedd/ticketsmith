@@ -43,6 +43,7 @@ def retrieve_relevant_chunks(query: str, top_k: int = 5) -> str:
         "Search the internal knowledge base for relevant document chunks"
         " and return them formatted for prompting."
     ),
+    scope="kb:read",
 )
 def knowledge_base_search(query: str) -> str:
     """LangChain tool wrapper for :func:`retrieve_relevant_chunks`."""

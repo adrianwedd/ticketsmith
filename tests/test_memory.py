@@ -9,7 +9,11 @@ def test_conversation_buffer_window():
     def llm(_prompt: str) -> str:
         return "Thought: hi\nAction: echo_tool(message='x')"
 
-    @tool(name="echo_tool", description="Return the message.")
+    @tool(
+        name="echo_tool",
+        description="Return the message.",
+        scope="misc:echo",
+    )
     def echo_tool(message: str) -> str:
         return message
 

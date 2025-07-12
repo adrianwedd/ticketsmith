@@ -22,6 +22,7 @@ TRANSITION_DESC = (
 @tool(
     name="create_jira_issue",
     description=CREATE_DESC,
+    scope="jira:issue:create",
 )
 def create_jira_issue(
     project_key: str, summary: str, description: str, issue_type: str
@@ -45,6 +46,7 @@ def create_jira_issue(
 @tool(
     name="add_jira_comment",
     description="Add a comment to an existing Jira issue.",
+    scope="jira:comment:add",
 )
 def add_jira_comment(issue_key: str, comment: str) -> str:
     """Add a comment to a Jira issue."""
@@ -60,6 +62,7 @@ def add_jira_comment(issue_key: str, comment: str) -> str:
 @tool(
     name="assign_jira_user",
     description="Assign a Jira issue to a user by accountId.",
+    scope="jira:issue:assign",
 )
 def assign_jira_user(issue_key: str, account_id: str) -> str:
     """Assign a Jira issue to a user."""
@@ -75,6 +78,7 @@ def assign_jira_user(issue_key: str, account_id: str) -> str:
 @tool(
     name="transition_jira_issue",
     description=TRANSITION_DESC,
+    scope="jira:issue:transition",
 )
 def transition_jira_issue(issue_key: str, status_name: str) -> str:
     """Transition a Jira issue to the specified status."""
