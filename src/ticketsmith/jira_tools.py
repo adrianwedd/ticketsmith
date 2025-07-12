@@ -2,8 +2,12 @@ from __future__ import annotations
 
 from requests import RequestException
 
+import structlog
+
 from .tools import tool
 from .atlassian_auth import get_jira_client
+
+logger = structlog.get_logger(__name__)
 
 CREATE_DESC = (
     "Create a Jira issue. Provide project key, summary, "
@@ -24,6 +28,7 @@ def create_jira_issue(
 ) -> str:
     """Create a Jira issue and return the new issue key."""
     jira = get_jira_client()
+    logger.info("create_jira_issue", project_key=project_key, summary=summary)
     fields = {
         "project": {"key": project_key},
         "summary": summary,
@@ -44,6 +49,7 @@ def create_jira_issue(
 def add_jira_comment(issue_key: str, comment: str) -> str:
     """Add a comment to a Jira issue."""
     jira = get_jira_client()
+    logger.info("add_jira_comment", issue_key=issue_key)
     try:
         jira.issue_add_comment(issue_key, comment)
         return "comment added"
@@ -58,6 +64,7 @@ def add_jira_comment(issue_key: str, comment: str) -> str:
 def assign_jira_user(issue_key: str, account_id: str) -> str:
     """Assign a Jira issue to a user."""
     jira = get_jira_client()
+    logger.info("assign_jira_user", issue_key=issue_key, account_id=account_id)
     try:
         jira.assign_issue(issue_key, account_id=account_id)
         return "issue assigned"
@@ -72,6 +79,11 @@ def assign_jira_user(issue_key: str, account_id: str) -> str:
 def transition_jira_issue(issue_key: str, status_name: str) -> str:
     """Transition a Jira issue to the specified status."""
     jira = get_jira_client()
+    logger.info(
+        "transition_jira_issue",
+        issue_key=issue_key,
+        status=status_name,
+    )
     try:
         transition_id = jira.get_transition_id_to_status_name(
             issue_key,

@@ -12,3 +12,6 @@ sentence-transformers
 pytest
 pytest-mock
 locust
+structlog
+opentelemetry-api
+opentelemetry-sdk

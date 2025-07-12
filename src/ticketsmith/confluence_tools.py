@@ -2,8 +2,12 @@ from __future__ import annotations
 
 from requests import RequestException
 
+import structlog
+
 from .tools import tool
 from .atlassian_auth import get_confluence_client
+
+logger = structlog.get_logger(__name__)
 
 CREATE_DESC = (
     "Create a Confluence page in the given space with the provided "
@@ -32,6 +36,7 @@ def create_confluence_page(space: str, title: str, body: str) -> str:
     """
 
     confluence = get_confluence_client()
+    logger.info("create_confluence_page", space=space, title=title)
     try:
         page = confluence.create_page(space, title, body)
         return str(page.get("id", ""))
@@ -51,6 +56,7 @@ def search_confluence(query: str) -> dict:
     """
 
     confluence = get_confluence_client()
+    logger.info("search_confluence", query=query)
     cql_query = f"siteSearch ~ '{query}'"
     try:
         return confluence.cql(cql_query)
@@ -71,6 +77,7 @@ def append_to_confluence_page(page_id: str, content: str) -> str:
     """
 
     confluence = get_confluence_client()
+    logger.info("append_to_confluence_page", page_id=page_id)
     try:
         confluence.append_page(page_id, content)
         return "content appended"
