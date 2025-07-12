@@ -5,7 +5,12 @@ from typing import Dict, Iterable, List, Tuple
 
 from .cost_tracking import chat_completion_with_tracking
 
-from .metrics import ERROR_COUNT, REQUEST_LATENCY, record_token_usage
+from .metrics import (
+    ERROR_COUNT,
+    REQUEST_LATENCY,
+    record_token_usage,
+    record_evaluation_scores,
+)
 
 JUDGE_PROMPT = (
     "You are a strict judge for AI assistants. "
@@ -201,7 +206,9 @@ def evaluate_from_files(
         if item["id"] in outputs
     ]
     results = evaluate_dataset(triples, model=model)
-    return aggregate_scores(results)
+    scores = aggregate_scores(results)
+    record_evaluation_scores(scores)
+    return scores
 
 
 def evaluate_rag_from_files(
@@ -231,4 +238,6 @@ def evaluate_rag_from_files(
             )
         )
     results = evaluate_rag_dataset(rows, model=model)
-    return aggregate_rag_scores(results)
+    scores = aggregate_rag_scores(results)
+    record_evaluation_scores(scores)
+    return scores

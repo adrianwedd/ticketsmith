@@ -6,7 +6,7 @@ from typing import Any, Dict
 import os
 import structlog
 
-from prometheus_client import Counter, Histogram, start_http_server
+from prometheus_client import Counter, Histogram, Gauge, start_http_server
 
 # Histogram to track latency of agent requests
 REQUEST_LATENCY = Histogram(
@@ -85,3 +85,21 @@ def record_api_cost(model: str, usage: Dict[str, Any]) -> float:
             budget=_BUDGET_THRESHOLD,
         )
     return cost
+
+
+EVALUATION_SCORE = Gauge(
+    "ticketsmith_evaluation_score",
+    "Evaluation score from test runs",
+    ["metric"],
+)
+
+
+def record_evaluation_scores(scores: Dict[str, float]) -> None:
+    """Publish evaluation metrics to Prometheus Gauges."""
+    for metric, value in scores.items():
+        try:
+            EVALUATION_SCORE.labels(metric=metric).set(float(value))
+        except ValueError:
+            logger.warning(
+                "invalid_evaluation_score", metric=metric, value=value
+            )

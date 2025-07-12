@@ -808,7 +808,7 @@
     - 705
     - 804
   priority: 3
-  status: "pending"
+  status: "done"
   command: null
   task_id: "MONITOR-AIQA-001"
   area: "Monitoring"
