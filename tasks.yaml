@@ -1142,7 +1142,7 @@
   dependencies:
     - 906
   priority: 1
-  status: "pending"
+  status: "done"
   command: null
   task_id: "SEC-ISMS-001"
   area: "Compliance"
