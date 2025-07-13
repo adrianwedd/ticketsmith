@@ -8,3 +8,4 @@ Key principles:
 - Risks are identified and treated according to the methodology in the Risk Register.
 - Policies and procedures are published in Confluence and kept up to date.
 
+- The full ISMS manual and risk assessment results are stored in Confluence for auditors.
