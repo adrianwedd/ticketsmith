@@ -1122,7 +1122,7 @@
     - 904
     - 906
   priority: 1
-  status: "pending"
+  status: "done"
   command: null
   task_id: "SEC-RBAC-001"
   area: "Compliance"
@@ -1130,6 +1130,7 @@
     - "Define user and service roles with specific permissions."
     - "Configure the system to enforce these roles."
     - "Provide mandatory training on RBAC policies for all users."
+    - "Record training completion in SECURITY_TRAINING_LOG.md."
   acceptance_criteria:
     - "Roles and permissions are documented."
     - "System enforces RBAC for all operations."
