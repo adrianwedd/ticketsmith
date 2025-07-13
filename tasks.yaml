@@ -1180,7 +1180,7 @@
   dependencies:
     - 903
   priority: 2
-  status: "pending"
+  status: "done"
   command: null
   task_id: "SEC-FISMA-001"
   area: "Compliance"
@@ -1316,4 +1316,61 @@
   acceptance_criteria:
     - "Processing register is complete and kept current."
     - "DPIAs are available for auditor review."
+
+- id: 1019
+  title: "Implement Account Management Controls (AC-2)"
+  description: "Establish processes for creating, managing, and revoking user accounts per NIST 800-53 AC-2."
+  component: "Compliance"
+  dependencies:
+    - 1011
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "SEC-NIST-AC2-001"
+  area: "Compliance"
+  actionable_steps:
+    - "Define account creation and approval workflow."
+    - "Automate periodic account reviews and disable stale accounts."
+    - "Document procedures in the ISMS repository."
+  acceptance_criteria:
+    - "All accounts are provisioned and deprovisioned through the documented process."
+    - "Quarterly account review reports are available."
+
+- id: 1020
+  title: "Implement Audit Event Logging (AU-2)"
+  description: "Capture and retain audit logs for security-relevant events per NIST 800-53 AU-2."
+  component: "Compliance"
+  dependencies:
+    - 1011
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "SEC-NIST-AU2-001"
+  area: "Compliance"
+  actionable_steps:
+    - "Identify events requiring audit logs."
+    - "Configure centralized log storage and retention."
+    - "Establish procedures for log review."
+  acceptance_criteria:
+    - "Security events are logged and retained per policy."
+    - "Log review procedures are documented."
+
+- id: 1021
+  title: "Enhance Incident Handling Procedures (IR-4)"
+  description: "Update incident response process to satisfy NIST 800-53 IR-4 requirements."
+  component: "Compliance"
+  dependencies:
+    - 1011
+  priority: 2
+  status: "pending"
+  command: null
+  task_id: "SEC-NIST-IR4-001"
+  area: "Compliance"
+  actionable_steps:
+    - "Develop playbooks for common incident scenarios."
+    - "Conduct incident response training exercises."
+    - "Integrate lessons learned into the ISMS."
+  acceptance_criteria:
+    - "Incident playbooks are approved."
+    - "Exercises occur at least annually."
 
