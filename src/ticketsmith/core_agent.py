@@ -7,6 +7,8 @@ from typing import Any, Callable, Dict
 
 import structlog
 
+from .prompt_loader import load_prompt
+
 from .metrics import ERROR_COUNT, REQUEST_LATENCY
 
 from .memory import ConversationBuffer, SimpleVectorStore
@@ -17,11 +19,7 @@ from langgraph import graph
 
 logger = structlog.get_logger(__name__)
 
-SYSTEM_PROMPT = (
-    "You are a helpful assistant. Only answer with information supported by "
-    "the provided context. If the context does not contain the answer, "
-    "respond with 'I don't know based on the provided context.'"
-)
+SYSTEM_PROMPT = load_prompt("system_prompt")
 
 
 class CoreAgent:

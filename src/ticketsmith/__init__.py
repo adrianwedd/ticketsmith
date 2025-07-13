@@ -23,6 +23,7 @@ from .knowledge_base import knowledge_base_search, retrieve_relevant_chunks
 from .linking_tools import create_linked_issue_and_page
 from .metrics import start_metrics_server, record_evaluation_scores
 from .cost_tracking import chat_completion_with_tracking
+from .prompt_loader import load_prompt
 from .atlassian_auth import (
     AtlassianAuthError,
     get_confluence_client,
@@ -60,4 +61,5 @@ __all__ = [
     "start_metrics_server",
     "record_evaluation_scores",
     "chat_completion_with_tracking",
+    "load_prompt",
 ]
