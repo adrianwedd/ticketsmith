@@ -1198,7 +1198,7 @@
   dependencies:
     - 1011
   priority: 2
-  status: "pending"
+  status: "done"
   command: null
   task_id: "SEC-FISMA-ATO-001"
   area: "Compliance"
