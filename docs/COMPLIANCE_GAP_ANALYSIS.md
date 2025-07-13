@@ -17,9 +17,10 @@ This document summarizes the regulatory frameworks relevant to the TicketSmith p
 - Incident response process documented in `INCIDENT_RESPONSE.md`.
 - OAuth-based access control planned for tool APIs (task SEC-OAUTH-001).
 - BAA template and workflow documented in [BAA Management Workflow](policies/BAA_WORKFLOW.md).
+- Data encryption at rest documented in [Data Encryption Policy](policies/DATA_ENCRYPTION_POLICY.md).
 
 **Gaps**
-- Data encryption at rest and detailed audit logging not documented.
+- Detailed audit logging not documented.
 - Role-based access controls and training programs incomplete.
 
 ### ISO 27001
