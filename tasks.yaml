@@ -1026,6 +1026,7 @@
   actionable_steps:
     - "Create operational runbooks for common incident response scenarios (e.g., 'What to do when the cost alert fires')."
     - "Prepare presentation slides and training materials."
+    - "Write non-technical support guides in Confluence organized with a clear page hierarchy."
     - "Conduct interactive training sessions with the operations and support teams."
     - "Establish a clear process for escalating issues from the support team back to the development team."
     - "Formally transfer ownership of the production system to the operations team."
