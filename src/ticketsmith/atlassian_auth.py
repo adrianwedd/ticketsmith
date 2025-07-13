@@ -6,6 +6,8 @@ import os
 
 from atlassian import Confluence, Jira
 
+from .audit import log_security_event
+
 
 class AtlassianAuthError(RuntimeError):
     """Raised when required authentication variables are missing."""
@@ -24,6 +26,7 @@ def get_jira_client() -> Jira:
     base_url = _get_env("ATLASSIAN_BASE_URL")
     username = _get_env("ATLASSIAN_USERNAME")
     token = _get_env("ATLASSIAN_API_TOKEN")
+    log_security_event("login", user=username, service="jira")
     return Jira(url=base_url, username=username, password=token)
 
 
@@ -32,6 +35,7 @@ def get_confluence_client() -> Confluence:
     base_url = _get_env("ATLASSIAN_BASE_URL")
     username = _get_env("ATLASSIAN_USERNAME")
     token = _get_env("ATLASSIAN_API_TOKEN")
+    log_security_event("login", user=username, service="confluence")
     return Confluence(url=base_url, username=username, password=token)
 
 
