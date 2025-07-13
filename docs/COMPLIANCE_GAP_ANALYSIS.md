@@ -16,9 +16,9 @@ This document summarizes the regulatory frameworks relevant to the TicketSmith p
 - PII detection and redaction pipeline implemented (task SEC-PII-001).
 - Incident response process documented in `INCIDENT_RESPONSE.md`.
 - OAuth-based access control planned for tool APIs (task SEC-OAUTH-001).
+- BAA template and workflow documented in [BAA Management Workflow](policies/BAA_WORKFLOW.md).
 
 **Gaps**
-- No Business Associate Agreement (BAA) process established.
 - Data encryption at rest and detailed audit logging not documented.
 - Role-based access controls and training programs incomplete.
 
