@@ -1085,7 +1085,7 @@
   dependencies:
     - 801
   priority: 1
-  status: "pending"
+  status: "done"
   command: null
   task_id: "SEC-ENC-001"
   area: "Compliance"

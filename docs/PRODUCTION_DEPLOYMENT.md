@@ -28,6 +28,7 @@ This document outlines how to deploy TICKETSMITH in a resilient, scalable manner
 
 - Use automated PostgreSQL backups (e.g., daily snapshots to S3 or the database provider's backup service).
 - Store encryption keys and credentials in the chosen secret manager.
+- Enable storage encryption for the PostgreSQL database and S3 buckets using provider-managed KMS keys.
 - Document the restoration process:
   1. Provision a new database instance.
   2. Restore from the most recent snapshot.
