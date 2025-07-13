@@ -1019,7 +1019,7 @@
     - 1001
     - 1002
   priority: 3
-  status: "pending"
+  status: "done"
   command: null
   task_id: "PROJ-HANDOFF-001"
   area: "Handoff"
