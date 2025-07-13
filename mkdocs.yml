@@ -17,3 +17,7 @@ nav:
       - Core Agent Loop: CORE_AGENT_LOOP.md
       - Atlassian Integration: ATLASSIAN_INTEGRATION.md
       - RAG Architecture: RAG_ARCHITECTURE.md
+  - Operations:
+      - Training Guide: handoff/TRAINING_GUIDE.md
+      - Cost Alert Runbook: handoff/COST_ALERT_RUNBOOK.md
+      - Escalation Process: handoff/ESCALATION_PROCESS.md
