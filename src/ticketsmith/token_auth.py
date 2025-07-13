@@ -6,6 +6,8 @@ import json
 import os
 from typing import Dict, Set
 
+from .audit import log_security_event
+
 
 class InvalidTokenError(PermissionError):
     """Raised when an access token is missing or invalid."""
@@ -33,6 +35,9 @@ def validate_token(
         token_scopes = load_token_scopes()
     scopes = token_scopes.get(token)
     if scopes is None:
+        log_security_event("token_invalid", user=token)
         raise InvalidTokenError("401 Unauthorized: invalid token")
     if scope not in scopes:
+        log_security_event("insufficient_scope", user=token, scope=scope)
         raise InsufficientScopeError("403 Forbidden: insufficient scope")
+    log_security_event("token_validated", user=token, scope=scope)

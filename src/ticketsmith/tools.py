@@ -15,6 +15,7 @@ from .token_auth import (
     load_token_scopes,
     InvalidTokenError,
 )
+from .audit import log_security_event
 
 tracer = trace.get_tracer(__name__)
 
@@ -102,6 +103,12 @@ class ToolDispatcher:
         if not access_token:
             raise InvalidTokenError("401 Unauthorized: missing token")
         validate_token(access_token, tool.scope, self._token_scopes)
+        log_security_event(
+            "data_access",
+            user=access_token,
+            tool=name,
+            scope=tool.scope,
+        )
         if name in self._high_risk and self._approval_client:
             approved = self._approval_client.request_approval(name, kwargs)
             if not approved:
