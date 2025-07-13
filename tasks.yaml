@@ -996,7 +996,7 @@
     - 101
     - 103
   priority: 2
-  status: "pending"
+  status: "done"
   command: null
   task_id: "DOCS-USER-001"
   area: "Documentation"
@@ -1043,7 +1043,7 @@
   dependencies:
     - 104
   priority: 1
-  status: "pending"
+  status: "done"
   command: null
   task_id: "PROJ-ARCH-003"
   area: "Architecture"

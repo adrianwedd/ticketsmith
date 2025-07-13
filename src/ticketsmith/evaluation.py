@@ -13,33 +13,12 @@ from .metrics import (
     record_token_usage,
     record_evaluation_scores,
 )
+from .prompt_loader import load_prompt
 
-JUDGE_PROMPT = (
-    "You are a strict judge for AI assistants. "
-    "Score the candidate's answer on a scale of 1-5 for relevance, coherence, "
-    "and groundedness. "
-    "Relevance measures how well the answer addresses the user's question. "
-    "Coherence measures how logically consistent and well-structured the "
-    "answer is. "
-    "Groundedness measures whether each statement in the answer is supported "
-    "by the provided context. If a claim is unsupported, groundedness should "
-    "be low. "
-    "Respond in JSON with keys 'relevance', 'coherence', 'groundedness', and "
-    "'rationale'."
-)
+JUDGE_PROMPT = load_prompt("judge_prompt")
 
 # Additional prompt for RAG-specific evaluation
-RAG_JUDGE_PROMPT = (
-    "You are a strict judge for RAG systems. "
-    "Score the retrieved context and candidate answer on a scale of 1-5 for "
-    "context relevance, answer relevance, and groundedness. "
-    "Context relevance measures how well the provided context matches the "
-    "user's question. Answer relevance measures how well the candidate "
-    "answer addresses the question. Groundedness measures whether the "
-    "answer is supported by the context. Respond in JSON with keys "
-    "'context_relevance', 'answer_relevance', 'groundedness', and "
-    "'rationale'."
-)
+RAG_JUDGE_PROMPT = load_prompt("rag_judge_prompt")
 
 
 def score_answer(
