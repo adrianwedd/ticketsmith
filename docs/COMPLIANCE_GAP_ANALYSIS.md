@@ -27,11 +27,11 @@ This document summarizes the regulatory frameworks relevant to the TicketSmith p
 **Current Controls**
 - Security policies and ISMS framework planned (task SEC-POLICY-001).
 - Initial security model includes token-based authentication and PII handling.
+- Internal audit program with scheduled management reviews documented in
+  [Internal Audit Program](policies/INTERNAL_AUDIT_PROGRAM.md).
 
 **Gaps**
 - Formal ISMS documentation and risk assessments not yet created.
-- No regular internal audit process defined.
-- Limited evidence of continuous improvement or management review.
 
 ### FISMA
 **Current Controls**
