@@ -1289,7 +1289,7 @@
   dependencies:
     - 1016
   priority: 2
-  status: "pending"
+  status: "done"
   command: null
   task_id: "SEC-GDPR-RTBF-001"
   area: "Compliance"
