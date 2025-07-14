@@ -1211,12 +1211,12 @@
     - "ATO process documentation is published."
 - id: 1013
   title: "Perform System Categorization and Impact Analysis"
-  description: "Determine system impact level and categorize information types for FISMA compliance."
+  description: "Determine system impact level and categorize information types for FISMA compliance. The resulting categories and CIA ratings are documented in `docs/FISMA_SYSTEM_CATEGORIZATION.md`."
   component: "Compliance"
   dependencies:
     - 903
   priority: 2
-  status: "pending"
+  status: "done"
   command: null
   task_id: "SEC-FISMA-CAT-001"
   area: "Compliance"
@@ -1224,9 +1224,11 @@
     - "Identify all information types processed by the system."
     - "Determine confidentiality, integrity, and availability impact levels."
     - "Document categorization results in the compliance repository."
+    - "Publish the categorization table in `docs/FISMA_SYSTEM_CATEGORIZATION.md`."
   acceptance_criteria:
     - "System categorization report is completed."
     - "Impact levels are approved by stakeholders."
+    - "Categorization table is committed to version control."
 - id: 1014
   title: "Create Change, Vendor, and Business Continuity Policies"
   description: "Draft policies covering change management, vendor management, and business continuity for SOC 2 readiness."
