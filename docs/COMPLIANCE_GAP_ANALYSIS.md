@@ -57,9 +57,9 @@ This document summarizes the regulatory frameworks relevant to the TicketSmith p
 **Current Controls**
 - PII detection reduces risk of storing personal data.
 - Incident response outlines notification steps.
+- DPA template and workflow documented in [DPA Execution Workflow](policies/DPA_WORKFLOW.md).
 
 **Gaps**
-- Data Processing Agreement (DPA) templates not provided.
 - Processes for user data deletion and export requests not implemented.
 - No record of processing activities or Data Protection Impact Assessments.
 

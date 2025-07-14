@@ -1272,7 +1272,7 @@
   dependencies:
     - 903
   priority: 2
-  status: "pending"
+  status: "done"
   command: null
   task_id: "SEC-GDPR-DPA-001"
   area: "Compliance"
