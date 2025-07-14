@@ -17,6 +17,8 @@ SECURITY_EVENTS = {
     "token_validated",
     "token_invalid",
     "insufficient_scope",
+    "data_deletion",
+    "data_export",
 }
 
 
