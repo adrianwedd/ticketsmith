@@ -45,9 +45,12 @@ This document summarizes the regulatory frameworks relevant to the TicketSmith p
 ### SOC 2
 **Current Controls**
 - Logging, incident response, and OAuth scopes planned provide a baseline for security and availability.
+- Formal change management, vendor due diligence, and business continuity policies documented in
+  [Change Management Policy](policies/CHANGE_MANAGEMENT_POLICY.md),
+  [Vendor Due Diligence Policy](policies/VENDOR_DUE_DILIGENCE_POLICY.md), and
+  [Business Continuity and Disaster Recovery Plan](policies/BUSINESS_CONTINUITY_PLAN.md).
 
 **Gaps**
-- Formal policies for change management, vendor management, and business continuity not documented.
 - Independent SOC 2 audit has not been scheduled.
 
 ### GDPR

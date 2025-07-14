@@ -1236,7 +1236,7 @@
   dependencies:
     - 906
   priority: 2
-  status: "pending"
+  status: "done"
   command: null
   task_id: "SEC-SOC2-POL-001"
   area: "Compliance"
