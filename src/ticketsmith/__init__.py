@@ -30,6 +30,7 @@ from .atlassian_auth import (
     get_jira_client,
     get_clients,
 )
+from .privacy import add_processing_activity, record_dpia
 
 __all__ = [
     "CoreAgent",
@@ -62,4 +63,6 @@ __all__ = [
     "record_evaluation_scores",
     "chat_completion_with_tracking",
     "load_prompt",
+    "add_processing_activity",
+    "record_dpia",
 ]
